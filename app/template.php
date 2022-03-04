@@ -9,8 +9,8 @@
   <body>
     <nav>
       <div class="wrapper">
-        <a href="index.php"><img class="logo" src="assets/img/camagru_logo.png"></a>
         <ul>
+          <li><a href="index.php"><img class="logo" src="assets/img/camagru_logo.png"></a></li>
           <li><a href="index.php">Home</a></li>
           <li><a href="index.php">Stuff</a></li>
           <li><a href="login.php">Log in</a></li>
@@ -18,3 +18,9 @@
         </ul>
       </div>
     </nav>
+    <?php
+      echo $body;
+    ?>
+  </body>
+</html>
+<script src="assets/js/script.js"></script>

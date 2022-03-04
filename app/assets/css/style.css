@@ -1,5 +1,10 @@
 body {
-	background-color: #EEEEEE;
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+  color: #5a5a5a;
+  background-color: #EEEEEE;
+  line-height: 1.6;
+  font-size: 18px;
 }
 
 h1, h2, h3, h4, h5, h6, p {
@@ -9,5 +14,64 @@ h1, h2, h3, h4, h5, h6, p {
 }
 
 .logo {
-	max-width: 20px;
+	max-width: 40px;
+}
+
+ ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #333;
+}
+
+li {
+  display: inline;
+  border-right: 1px solid #bbb;
+	float: left;
+}
+
+li:last-child {
+  border-right: none;
+}
+
+li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+li a:hover {
+	background-color:: #111;
+}
+
+.active {
+  background-color: #0433AD;
+}
+
+.featurette-divider {
+  margin: 5rem 0;
+}
+
+#page-title {
+  text-align: center;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 2em;
+}
+
+h1.text-left {
+  text-align: left;
+  margin-bottom: 0.2em;
+}
+
+input[type=text], input[type=password], button {
+    text-align:center;
+    display: block;
+    margin: auto;
+    border: 1px solid #818181;
 }
