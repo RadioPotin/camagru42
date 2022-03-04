@@ -1,0 +1,13 @@
+body {
+	background-color: #EEEEEE;
+}
+
+h1, h2, h3, h4, h5, h6, p {
+	font-family: 'Fontin';
+	color: #111;
+	line-height: 24px;
+}
+
+.logo {
+	max-width: 20px;
+}
