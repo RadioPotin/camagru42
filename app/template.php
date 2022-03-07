@@ -8,15 +8,13 @@
   </head>
   <body>
     <nav>
-      <div class="wrapper">
-        <ul>
-          <li><a href="index.php"><img class="logo" src="assets/img/camagru_logo.png"></a></li>
-          <li><a href="index.php">Home</a></li>
-          <li><a href="index.php">Stuff</a></li>
-          <li><a href="login.php">Log in</a></li>
-          <li><a href="signup.php">Sign up</a></li>
-        </ul>
-      </div>
+      <ul>
+        <li><a href="index.php"><img class="logo" src="assets/img/camagru_logo.png"></a></li>
+        <li><a href="index.php">Home</a></li>
+        <li><a href="index.php">Stuff</a></li>
+        <li><a href="login.php">Log in</a></li>
+        <li><a href="signup.php">Sign up</a></li>
+      </ul>
     </nav>
     <?php
       echo $body;
