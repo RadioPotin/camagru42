@@ -9,9 +9,9 @@
   <body>
     <nav>
       <ul>
-        <li><a href="index.php"><img class="logo" src="assets/img/camagru_logo.png"></a></li>
-        <li><a href="index.php">Home</a></li>
-        <li><a href="index.php">Stuff</a></li>
+        <li><a href="/"><img class="logo" src="assets/img/camagru_logo.png"></a></li>
+        <li><a href="/">Home</a></li>
+        <li><a href="">Stuff</a></li>
         <li><a href="login.php">Log in</a></li>
         <li><a href="signup.php">Sign up</a></li>
       </ul>
