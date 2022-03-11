@@ -16,7 +16,15 @@ function tables_exist($pdo)
 
 function create_tables($pdo) {
     $commands =
-        ["CREATE TABLE IF NOT EXISTS login (username TEXT NOT NULL, email TEXT NOT NULL, userpwd TEXT NOT NULL, PRIMARY KEY ( username, email ));"];
+        ["CREATE TABLE IF NOT EXISTS login (
+            username TEXT NOT NULL,
+            email TEXT NOT NULL,
+            userpwd TEXT NOT NULL,
+            active TINYINT(1) DEFAULT 0,
+            activation_code   varchar(255) NOT NULL,
+            activation_expiry datetime     NOT NULL,
+            activated_at datetime DEFAULT NULL,
+            PRIMARY KEY ( username, email ));"];
 
     foreach ($commands as $command) {
         $pdo->exec($command);

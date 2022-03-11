@@ -39,6 +39,7 @@ if (isset($_POST["submit"]))
   // if form is well filled, use user's info to
   // create a new user in the database
   include_once 'user.php';
+
   // create a new instance of the User object
   $user = new User($username, $pwd, $email);
   // verify if the user already exists in the database
@@ -47,18 +48,25 @@ if (isset($_POST["submit"]))
   {
     err('Username or email is already taken');
   }
-  // actually create user by inserting information, hashing pwd
-  $user->create_user();
-  $body =
-    '<h1>You have signed up ! Now Log in !</h1>
-      <section class="signup-form">
-        <form action="login.php" method="post">
-          <input type="text" name="name" placeholder="Your username/email...">
-          <input type="password" name="pwd" placeholder="Your password...">
-          <button type="submit" name="submit">LOG IN !</button>
-        </form>
-      </section>';
-  include 'template.php';
+  else
+  {
+    // actually create user by inserting information, hashing pwd, activation code, etc
+    $user->create_user();
+
+    //TODO Next:
+    //1. do activate.php which will:
+    // from a get request,
+    // sanitize request
+    // get a user based on activation link and email,
+    // verify expiration date and delete user if expired
+    // otherwise activate user entry and redirect to login page
+    //
+
+
+
+    $body = "<h1>Verification email has been sent ! Please check your inbox and click the link in order to activate your account</h1>";
+    include 'template.php';
+  }
 }
 else {
   // if signup.php has been reached without filling a form
@@ -75,6 +83,6 @@ else {
     <button type="submit" name="submit">Sign up !</button>
     </form>
     </section>';
-  include("template.php");
+    include("template.php");
 }
 ?>
