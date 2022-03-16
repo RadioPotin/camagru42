@@ -1,11 +1,10 @@
 <?php
 
-function tables_exist($pdo)
-{
+function tables_exist($pdo) : bool {
     // Try a select statement against the table
     // Run it in try-catch in case PDO is in ERRMODE_EXCEPTION.
     try {
-        $pdo->query("SELECT 1 FROM login LIMIT 1");
+        $pdo->query("SELECT 1 FROM verified_users, pending_users LIMIT 1");
         //$pdo->query("SELECT 1 FROM overlayimages LIMIT 1");
     } catch (Exception $e) {
         // We got an exception (table not found)
@@ -14,24 +13,32 @@ function tables_exist($pdo)
     return TRUE ;
 }
 
-function create_tables($pdo) {
+function create_tables($pdo) : void {
     $commands =
-        ["CREATE TABLE IF NOT EXISTS login (
-            username TEXT NOT NULL,
-            email TEXT NOT NULL,
-            userpwd TEXT NOT NULL,
-            active TINYINT(1) DEFAULT 0,
-            activation_code   varchar(255) NOT NULL,
-            activation_expiry datetime     NOT NULL,
-            activated_at datetime DEFAULT NULL,
-            PRIMARY KEY ( username, email ));"];
+        ["PRAGMA foreign_keys = ON",
+
+        "CREATE TABLE IF NOT EXISTS verified_users (
+        ROWID,
+        username TEXT NOT NULL UNIQUE,
+        email TEXT NOT NULL UNIQUE,
+        userpwd TEXT NOT NULL,
+        PRIMARY KEY (ROWID))",
+
+        "CREATE TABLE IF NOT EXISTS pending_users(
+        ROWID,
+        username TEXT NOT NULL UNIQUE,
+        email TEXT NOT NULL UNIQUE,
+        userpwd TEXT NOT NULL,
+        activation_code varchar(255) NOT NULL,
+        activation_expiry datetime NOT NULL,
+        PRIMARY KEY (ROWID))"];
 
     foreach ($commands as $command) {
         $pdo->exec($command);
     }
 }
 
-function connect_todb() {
+function connect_todb() : object {
     $pdo = new \PDO("sqlite:" . "cumagru.db");
     if ($pdo === null)
     {

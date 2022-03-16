@@ -1,12 +1,6 @@
 <?php
 
-// err function that prints the error message
-// the body and the template
-function err($body)
-{
-  include("template.php");
-  exit ();
-}
+include_once 'lib.php';
 
 // if you get to the signup.php without actually
 // filling the required form
@@ -19,20 +13,16 @@ if (isset($_POST["submit"]))
 
   //Error handlers
   if (empty($email) || empty($username)
-    || empty($pwdd) || empty($pwd))
-  {
+    || empty($pwdd) || empty($pwd)) {
     err("Empty field");
   }
-  if (!preg_match("/^[a-zA-Z0-9]*$/", $username))
-  {
+  if (!preg_match("/^[a-zA-Z0-9_\-]*$/", $username)) {
     err("Invalid characters in your username");
   }
-  if (!filter_var($email, FILTER_VALIDATE_EMAIL))
-  {
+  if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
     err('Invalid email');
   }
-  if ($pwd !== $pwdd)
-  {
+  if ($pwd !== $pwdd) {
     err('PWD dont match');
   }
 
@@ -41,29 +31,18 @@ if (isset($_POST["submit"]))
   include_once 'user.php';
 
   // create a new instance of the User object
-  $user = new User($username, $pwd, $email);
+  $hashedpwd = password_hash($pwd, PASSWORD_DEFAULT);
+  $user = new User($username, $hashedpwd, $email);
   // verify if the user already exists in the database
   // check for its email/username
-  if ($user->exists())
-  {
+  if ($user->exists()) {
     err('Username or email is already taken');
   }
   else
   {
     // actually create user by inserting information, hashing pwd, activation code, etc
-    $user->create_user();
-
-    //TODO Next:
-    //1. do activate.php which will:
-    // from a get request,
-    // sanitize request
-    // get a user based on activation link and email,
-    // verify expiration date and delete user if expired
-    // otherwise activate user entry and redirect to login page
-    //
-
-
-
+    $user->create_pending_user();
+    $user->send_activation_email();
     $body = "<h1>Verification email has been sent ! Please check your inbox and click the link in order to activate your account</h1>";
     include 'template.php';
   }
