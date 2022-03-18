@@ -1,5 +1,4 @@
 <?php
-
 include_once 'dbh.php';
 
 const SENDER_EMAIL_ADDRESS = 'no-reply@email.com';
@@ -19,10 +18,13 @@ const FILTERS = [
 
 // err function that prints the error message
 // the body and the template
-function err($body)
-{
-  include("template.php");
-  exit ();
+function err($body) {
+    include("template.php");
+    exit ();
+}
+
+function generate_csrf_token () {
+    return bin2hex(random_bytes(32));
 }
 
 ?>

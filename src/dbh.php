@@ -18,24 +18,34 @@ function create_tables($pdo) : void {
         ["PRAGMA foreign_keys = ON",
 
         "CREATE TABLE IF NOT EXISTS verified_users (
-        ROWID,
-        username TEXT NOT NULL UNIQUE,
-        email TEXT NOT NULL UNIQUE,
-        userpwd TEXT NOT NULL,
-        PRIMARY KEY (ROWID))",
+            ROWID,
+            username TEXT NOT NULL UNIQUE,
+            email TEXT NOT NULL UNIQUE,
+            userpwd TEXT NOT NULL,
+            PRIMARY KEY (ROWID))",
 
         "CREATE TABLE IF NOT EXISTS pending_users(
-        ROWID,
-        username TEXT NOT NULL UNIQUE,
-        email TEXT NOT NULL UNIQUE,
-        userpwd TEXT NOT NULL,
-        activation_code varchar(255) NOT NULL,
-        activation_expiry datetime NOT NULL,
-        PRIMARY KEY (ROWID))"];
+            ROWID,
+            username TEXT NOT NULL UNIQUE,
+            email TEXT NOT NULL UNIQUE,
+            userpwd TEXT NOT NULL,
+            activation_code varchar(255) NOT NULL,
+            activation_expiry datetime NOT NULL,
+            PRIMARY KEY (ROWID))"];
 
     foreach ($commands as $command) {
         $pdo->exec($command);
     }
+}
+
+function set_db_session() : void
+{
+    if (!isset($_SESSION))
+    {
+        session_start();
+        $_SESSION["db"] = true;
+    }
+    return ;
 }
 
 function connect_todb() : object {
@@ -48,13 +58,16 @@ function connect_todb() : object {
     }
     if (tables_exist($pdo))
     {
+        set_db_session();
         return $pdo;
     }
     else
     {
         create_tables($pdo);
+        set_db_session();
         return ($pdo);
     }
+    return ($pdo);
 }
 
 ?>

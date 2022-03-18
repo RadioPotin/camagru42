@@ -1,6 +1,6 @@
 <?php
-
 include_once 'user.php';
+include_once 'lib.php';
 
 function find_unverified_user(string $activation_code) {
     $sql = "SELECT username, email, userpwd, activation_code,
@@ -34,15 +34,7 @@ $activation_code = $_GET['activation_code'];
 if ($activation_code) {
     if (($user = find_unverified_user($activation_code)) !== null) {
         $user->activate_user();
-        $body = '<section class="signup-form">
-            <h1>Thank you for registering! You may log in now</h1>
-            <form action="login.php" method="post">
-            <input type="text" name="name" placeholder="Your username/email...">
-            <input type="password" name="pwd" placeholder="Your password...">
-            <button type="submit" name="submit">LOG IN !</button>
-            </form>
-            </section>';
-        include("template.php");
+        include("login.php");
     } else {
         $body = '<h1>Either activation code has expired or is not recognized. Please register again.</h1>';
         include('template.php');
