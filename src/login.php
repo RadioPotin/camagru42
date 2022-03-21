@@ -1,9 +1,6 @@
 <?php
-if(!isset($_SESSION))
-{
-  session_start();
-}
 include_once 'lib.php';
+include_once 'include.php';
 
 // if you get to the login.php without actually
 // filling the required form

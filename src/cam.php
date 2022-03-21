@@ -1,4 +1,5 @@
 <?php
+include_once 'include.php';
 $body =
     '<div class="contentarea">
         <h1>Try it out</h1>

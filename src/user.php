@@ -2,6 +2,7 @@
 
 include_once "dbh.php";
 include_once "lib.php";
+include_once "include.php";
 
 class User {
 

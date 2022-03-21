@@ -1,4 +1,5 @@
 <?php
+include_once 'include.php';
 
 function tables_exist($pdo) : bool {
     // Try a select statement against the table
@@ -38,16 +39,6 @@ function create_tables($pdo) : void {
     }
 }
 
-function set_db_session() : void
-{
-    if (!isset($_SESSION))
-    {
-        session_start();
-        $_SESSION["db"] = true;
-    }
-    return ;
-}
-
 function connect_todb() : object {
     $pdo = new \PDO("sqlite:" . "cumagru.db");
     if ($pdo === null)
@@ -58,13 +49,11 @@ function connect_todb() : object {
     }
     if (tables_exist($pdo))
     {
-        set_db_session();
         return $pdo;
     }
     else
     {
         create_tables($pdo);
-        set_db_session();
         return ($pdo);
     }
     return ($pdo);

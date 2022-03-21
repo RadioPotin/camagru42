@@ -1,5 +1,7 @@
 <?php
 include_once 'dbh.php';
+include_once 'include.php';
+
 
 const SENDER_EMAIL_ADDRESS = 'no-reply@email.com';
 
@@ -19,7 +21,7 @@ const FILTERS = [
 // err function that prints the error message
 // the body and the template
 function err($body) {
-    include("template.php");
+    include_once("template.php");
     exit ();
 }
 

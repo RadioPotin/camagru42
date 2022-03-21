@@ -1,8 +1,5 @@
 <?php
-if (!isset($_SESSION))
-{
-    session_start();
-}
+include_once 'include.php';
 include_once "lib.php";
 include_once "dbh.php";
 include_once "user.php";

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="en">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -14,10 +14,7 @@
         <li><a href="/"><img class="logo" src="assets/img/camagru_logo.png"></a></li>
         <li><a href="/">Home</a></li>
         <?php
-          if(!isset($_SESSION))
-          {
-            session_start();
-          }
+          include_once "include.php";
           if (!isset($_SESSION["user"]) || empty($_SESSION["user"])) {
               echo '<li><a href="login.php">Log in</a></li>
                 <li><a href="signup.php">Sign up</a></li>';
@@ -34,5 +31,7 @@
       echo $body;
     ?>
   </body>
-  <script defer type="text/javascript" src="assets/js/script.js"></script>
+  <?php
+          echo '<script defer type="text/javascript" src="assets/js/script.js"></script>';
+  ?>
 </html>

@@ -1,6 +1,7 @@
 <?php
 include_once 'user.php';
 include_once 'lib.php';
+include_once 'include.php';
 
 function find_unverified_user(string $activation_code) {
     $sql = "SELECT username, email, userpwd, activation_code,
