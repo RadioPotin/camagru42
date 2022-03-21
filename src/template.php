@@ -34,5 +34,5 @@
       echo $body;
     ?>
   </body>
-  <script src="assets/js/script.js"></script>
+  <script defer type="text/javascript" src="assets/js/script.js"></script>
 </html>

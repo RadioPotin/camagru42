@@ -15,6 +15,7 @@ class User {
       $this->pwd = $pwd;
       $this->email = $email;
       $this->code = generate_activation_code();
+      $this->reset_hash = bin2hex(random_bytes(32));
    }
 
    // check if given USERNAME or EMAIL are already in login table
@@ -141,7 +142,7 @@ MESSAGE;
    }
 
    // deletes a user from pending_users table
-   function delete_user_by_usern() {
+   function delete_user_by_usern(): void {
       $sql = 'DELETE FROM pending_users WHERE username =:usern';
       $pdo = connect_todb();
       $statement = $pdo->prepare($sql);
@@ -150,12 +151,36 @@ MESSAGE;
       return ;
    }
 
-   function check_user_pwd(string $hashedpwd)
+   function check_user_pwd(string $hashedpwd): bool
    {
       if ($hashedpwd === $this->pwd) {
          return TRUE;
       }
       return FALSE;
+   }
+
+   // takes email of user
+   // sends a link to reset password
+   function send_pwd_reset_email(): void {
+      // use percent encoding for email and activation code
+      $pwd_reset_key = urlencode($this->code);
+      // create the activation link
+      $activation_link = APP_URL . "/reset.php?activation_code=$pwd_reset_key";
+      // set email subject & body
+      $subject = 'Forgotten your password ?';
+      $message = <<<MESSAGE
+            Hi,
+            Please click the following link to reset the password of your account:
+            $activation_link
+MESSAGE;
+      // email header
+      $header = "From:" . SENDER_EMAIL_ADDRESS;
+      // send the email
+      $success = mail($this->email, $subject, nl2br($message), $header);
+      if (!$success) {
+         $errorMessage = error_get_last()['message'];
+         die("ERROR, user.php: " . $errorMessage);
+      }
    }
 }
 

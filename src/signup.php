@@ -37,6 +37,11 @@ if (isset($_POST["submit"])) {
     if ($pwd !== $pwdd) {
       err('PWD dont match');
     }
+    if (preg_match('@[A-Z]@', $pwd) || preg_match('@[a-z]@', $pwd)
+      || preg_match('@[0-9]@', $pwd) || preg_match('@[^\w]@', $pwd))
+    {
+      err('Password should be at least 8 characters long and have the followin characters: one uppercase, one lowercase, one number and one special.');
+    }
 
     // if form is well filled, use user's info to
     // create a new user in the database

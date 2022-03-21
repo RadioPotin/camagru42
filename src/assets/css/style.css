@@ -71,8 +71,10 @@ input[type=text], input[type=password], button {
     border: 1px solid #818181;
 }
 
-section .signup-form {
-
+.signup-form {
+    text-align:center;
+    display: block;
+    margin: auto;
 }
 /*
 #canvas {

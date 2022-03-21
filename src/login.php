@@ -57,6 +57,8 @@ if (isset($_POST["submit"])) {
     <input type="text" name="name" placeholder="Your username/email...">
     <input type="password" name="pwd" placeholder="Your password...">
     <button type="submit" name="submit">LOG IN !</button>
+    <br/>
+    <a href="send_reset_pwd.php">Have you forgotten your password ?</a>
     </form>
     </section>';
   include("template.php");
