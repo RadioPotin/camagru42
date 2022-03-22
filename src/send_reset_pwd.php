@@ -1,10 +1,10 @@
 <?php
-include_once 'include.php';
+include_once "include.php";
 include_once "lib.php";
 include_once "dbh.php";
 include_once "user.php";
 
-// if you get to the reset_pwd.php with actuallu
+// if you get to the reset_pwd.php by
 // filling a form
 if (isset($_POST["submit"])) {
     //if you did, but token does NOT match
@@ -25,6 +25,10 @@ if (isset($_POST["submit"])) {
         $username = $row[0]["username"];
         $email = $row[0]["email"];
         $user = new User($username, "", $email);
+        $user->send_pwd_reset_email();
+        $body = "<h1>An email has been sent to your inbox,
+            please follow the link to reset your pwd</h1>";
+        include_once 'template.php';
     }
 } else {
     $_SESSION["token"] = generate_csrf_token();
@@ -37,7 +41,7 @@ if (isset($_POST["submit"])) {
         <p>We will send a password reset link to your email address</p>
         </form>
         </section>';
-    include("template.php");
+        include_once 'template.php';
 }
 
 ?>

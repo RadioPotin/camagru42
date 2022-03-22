@@ -21,33 +21,17 @@ if (isset($_POST["submit"])) {
     $pwdd = $_POST["pwdd"];
 
     //Error handlers
-    if (empty($email) || empty($username)
-      || empty($pwdd) || empty($pwd)) {
-      err("Empty field");
-    }
-    if (!preg_match("/^[a-zA-Z0-9_\-]*$/", $username)) {
-      err("Invalid characters in your username");
-    }
-    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-      err('Invalid email');
-    }
-    if ($pwd !== $pwdd) {
-      err('PWD dont match');
-    }
-    /*
-    if (preg_match('@[A-Z]@', $pwd) || preg_match('@[a-z]@', $pwd)
-      || preg_match('@[0-9]@', $pwd) || preg_match('@[^\w]@', $pwd))
-    {
-      err('Password should be at least 8 characters long and have the followin characters: one uppercase, one lowercase, one number and one special.');
-    }
-     */
+    validate_signup_form($email, $username, $pwd, $pwdd);
+    validate_username($username);
+    validate_email($email);
+    match_pwds($pwd, $pwdd);
+    //TODO uncomment validate_pwd($pwd);
 
-    // if form is well filled, use user's info to
+    // if form is well filled, so use user's info to
     // create a new user in the database
     include_once 'user.php';
-
     // create a new instance of the User object
-    $hashedpwd = password_hash($pwd, PASSWORD_DEFAULT);
+    $hashedpwd = password_hash($pwd, PASSWORD_BCRYPT, ['salt'=>salt]);
     $user = new User($username, $hashedpwd, $email);
     // verify if the user already exists in the database
     // check for its email/username

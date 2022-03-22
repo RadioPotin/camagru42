@@ -19,20 +19,23 @@ function create_tables($pdo) : void {
         ["PRAGMA foreign_keys = ON",
 
         "CREATE TABLE IF NOT EXISTS verified_users (
-            ROWID,
+            userid INTEGER PRIMARY KEY AUTOINCREMENT,
             username TEXT NOT NULL UNIQUE,
             email TEXT NOT NULL UNIQUE,
-            userpwd TEXT NOT NULL,
-            PRIMARY KEY (ROWID))",
+            userpwd TEXT NOT NULL)",
 
         "CREATE TABLE IF NOT EXISTS pending_users(
-            ROWID,
             username TEXT NOT NULL UNIQUE,
             email TEXT NOT NULL UNIQUE,
             userpwd TEXT NOT NULL,
             activation_code varchar(255) NOT NULL,
-            activation_expiry datetime NOT NULL,
-            PRIMARY KEY (ROWID))"];
+            activation_expiry datetime NOT NULL)",
+
+        "CREATE TABLE IF NOT EXISTS reset_pwd_hashes(
+            reset_hash TEXT NOT NULL,
+            userid INTEGER NOT NULL,
+            FOREIGN KEY (userid) REFERENCES verified_users(userid)
+            )"];
 
     foreach ($commands as $command) {
         $pdo->exec($command);
@@ -62,15 +65,21 @@ function connect_todb() : object {
 function fetch_user_info($email_or_uid)
 {
     $pdo = connect_todb();
-    $sql = "SELECT username,email FROM verified_users WHERE username=:uid OR email=:email";
+    $sql = "SELECT username,email,userpwd
+        FROM verified_users
+        WHERE username=:uid
+        OR email=:email
+        OR userid=:userid";
     $statement = $pdo->prepare($sql);
     $statement->bindParam(":uid", $email_or_uid);
     $statement->bindParam(":email", $email_or_uid);
+    $statement->bindParam(":userid", $email_or_uid);
     $statement->execute();
     $row = $statement->fetchAll();
     if (!empty($row))
         return $row;
     else return null;
 }
+
 
 ?>

@@ -20,7 +20,7 @@
                 <li><a href="signup.php">Sign up</a></li>';
           }
           else {
-            echo '<li><a href="cam.php">Cumagru</a></li>
+            echo '<li><a href="picture.php">Cumagru</a></li>
                 <li><a href="signout.php">Sign out</a></li>
                 <li><a href="myprofile.php">My Profile</a></li>';
           }
@@ -32,6 +32,8 @@
     ?>
   </body>
   <?php
-          echo '<script defer type="text/javascript" src="assets/js/script.js"></script>';
+    if (empty($script))
+      $script = "";
+    echo $script;
   ?>
 </html>

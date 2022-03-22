@@ -15,5 +15,6 @@ $body =
         </canvas>
         <p>ABLOBLO</p>
     </div>';
+$script = '<script defer type="text/javascript" src="assets/js/script.js"></script>';
 include ("template.php");
 ?>

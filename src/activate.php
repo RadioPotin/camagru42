@@ -35,14 +35,14 @@ $activation_code = $_GET['activation_code'];
 if ($activation_code) {
     if (($user = find_unverified_user($activation_code)) !== null) {
         $user->activate_user();
-        include("login.php");
+        include_once "login.php";
     } else {
         $body = '<h1>Either activation code has expired or is not recognized. Please register again.</h1>';
-        include('template.php');
+        include_once 'template.php' ;
     }
 } else {
     $body = '<h1>Are you trying to be sneaky?</h1>';
-    include('template.php');
+    include_once 'template.php';
 }
 
 ?>

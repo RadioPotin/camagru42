@@ -42,7 +42,7 @@ if (isset($_POST["submit"])) {
       $_SESSION["user"] = true;
       $_SESSION["username"] = $username;
       $body = "<h1>LOGGED IN!</h1>";
-      include 'cam.php';
+      include 'picture.php';
     }
   }
 } else {
