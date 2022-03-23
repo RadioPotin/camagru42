@@ -1,6 +1,8 @@
 <?php
 include_once 'lib.php';
+include_once 'dbh.php';
 include_once 'include.php';
+include_once 'user.php';
 
 // if you get to the login.php without actually
 // filling the required form
@@ -15,34 +17,28 @@ if (isset($_POST["submit"])) {
     //SUBMITTED AND TOKEN MATCHED
     //
     // process the form
-    $username = $_POST["name"];
+    $username_or_email = $_POST["name"];
     $pwd = $_POST["pwd"];
 
     //Error handlers
-    if (empty($username) || empty($pwd)) {
-      err("Empty field");
-    }
-    if (!preg_match("/^[a-zA-Z0-9_\-]*$/", $username)) {
-      err("Invalid characters in your username");
-    }
+    validate_login_form($username_or_email, $pwd);
 
-    include_once 'user.php';
-    $email = "";
-    $hashedpwd = password_hash($pwd, PASSWORD_DEFAULT);
+    $row = fetch_user_info($username_or_email);
+
+    $username = $row[0]["username"];
+    $email = $row[0]["email"];
+    $hashedpwd = $row[0]["userpwd"];
     $user = new User($username, $hashedpwd, $email);
+
     // verify if the user already exists in the database
     // check for its email/username
-    if (!$user->exists()) {
-      err('You should create an account!');
-    }
-    else
-    {
-      // TODO LOGGED IN STUFF
-      // ALSO CSRF
+    if (!$user->exists() || !$user->check_user_pwd($pwd)) {
+      err('Incorrect password or username/email! Please retry.');
+    } else {
       $_SESSION["user"] = true;
       $_SESSION["username"] = $username;
       $body = "<h1>LOGGED IN!</h1>";
-      include 'picture.php';
+      include_once 'picture.php';
     }
   }
 } else {
@@ -58,6 +54,6 @@ if (isset($_POST["submit"])) {
     <a href="send_reset_pwd.php">Have you forgotten your password ?</a>
     </form>
     </section>';
-  include("template.php");
+  include_once "template.php";
 }
 ?>

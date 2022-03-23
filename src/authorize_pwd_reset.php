@@ -15,10 +15,7 @@ function check_reset_hash(string $id, string $hash): bool {
     $statement->bindParam(':hash', $hash);
     $statement->execute();
     $res = $statement->fetchAll();
-    if (count($res) === 1) {
-        return TRUE;
-    }
-    return FALSE;
+    return (count($res) === 1);
 }
 
 $id = $_GET['id'];
@@ -44,6 +41,4 @@ if ($id && $hash) {
     $body = "<h1>ARE YOU TRYING TO BE SNEAKY ??</h1>";
     include_once "template.php";
 }
-
-
 ?>

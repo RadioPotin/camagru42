@@ -21,12 +21,13 @@ if (isset($_POST["submit"])) {
             // get previous password and compare it to new one
             $username = $_SESSION["username"];
             $row = fetch_user_info($username);
-            if (!password_verify($pwd, $row[0]["userpwd"])){
+            if (!password_verify($pwd, $row[0]["userpwd"])) {
                 //TODO dont forget to add function validate_pwd to that test
-                //
-                //RESET
+                $hashed_pwd = password_hash($pwd, PASSWORD_DEFAULT);
+                $user = new User($row[0]["username"], $hashed_pwd, $row[0]["email"]);
+                $user->change_pwd($row[0]["userid"]);
 
-                $body = "ready for resetting";
+                $body = "<h1>PASSWORD HAS BEEN RESET PAL, GO CHECK IT OUT</h1>";
                 include_once 'template.php';
             } else {
                 //NEW PASSWORD MATCHES OLD ONE

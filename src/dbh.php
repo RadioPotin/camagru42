@@ -62,10 +62,9 @@ function connect_todb() : object {
     return ($pdo);
 }
 
-function fetch_user_info($email_or_uid)
-{
+function fetch_user_info($email_or_uid) {
     $pdo = connect_todb();
-    $sql = "SELECT username,email,userpwd
+    $sql = "SELECT username,email,userpwd,userid
         FROM verified_users
         WHERE username=:uid
         OR email=:email
@@ -76,9 +75,11 @@ function fetch_user_info($email_or_uid)
     $statement->bindParam(":userid", $email_or_uid);
     $statement->execute();
     $row = $statement->fetchAll();
-    if (!empty($row))
+    if (!empty($row)) {
         return $row;
-    else return null;
+    } else {
+        return null;
+    }
 }
 
 

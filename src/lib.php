@@ -35,6 +35,14 @@ function validate_signup_form($email, $username, $pwd, $pwdd)
     return TRUE;
 }
 
+function validate_login_form($email_or_username, $pwd)
+{
+    if (empty($email_or_username) || empty($pwd)) {
+        err("Empty field");
+    }
+    return TRUE;
+}
+
 function validate_username($username)
 {
     if (!preg_match("/^[a-zA-Z0-9_\-]*$/", $username)) {

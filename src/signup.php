@@ -31,7 +31,7 @@ if (isset($_POST["submit"])) {
     // create a new user in the database
     include_once 'user.php';
     // create a new instance of the User object
-    $hashedpwd = password_hash($pwd, PASSWORD_BCRYPT, ['salt'=>salt]);
+    $hashedpwd = password_hash($pwd, PASSWORD_DEFAULT);
     $user = new User($username, $hashedpwd, $email);
     // verify if the user already exists in the database
     // check for its email/username
@@ -42,7 +42,7 @@ if (isset($_POST["submit"])) {
       $user->create_pending_user();
       $user->send_activation_email();
       $body = "<h1>Verification email has been sent ! Please check your inbox and click the link in order to activate your account</h1>";
-      include 'template.php';
+      include_once 'template.php';
     }
   }
 } else {
@@ -61,6 +61,6 @@ if (isset($_POST["submit"])) {
     <button type="submit" name="submit">Sign up !</button>
     </form>
     </section>';
-  include("template.php");
+  include_once "template.php";
 }
 ?>

@@ -32,13 +32,7 @@ class User {
       $stmt->bindParam(':email', $this->email);
       $stmt->execute();
       $result = $stmt->fetchAll();
-      if (count($result) > 0)
-      {
-         return true;
-      }
-      else{
-         return false;
-      }
+      return(count($result) > 0);
    }
 
    public function exists_in_verified(): bool {
@@ -54,19 +48,12 @@ class User {
       $stmt->bindParam(':email', $this->email);
       $stmt->execute();
       $result = $stmt->fetchAll();
-      if (count($result) > 0) {
-         return true;
-      } else {
-         return false;
-      }
+      return(count($result) > 0);
    }
 
    public function exists() : bool {
-      if ($this->exists_in_verified() || $this->exists_in_pending()) {
-         return TRUE;
-      } else {
-         return FALSE;
-      }
+      return ($this->exists_in_verified()
+         || $this->exists_in_pending());
    }
 
    // create pending user
@@ -108,11 +95,9 @@ class User {
       return ;
    }
 
-   function check_user_pwd(string $hashedpwd): bool {
-      if ($hashedpwd === $this->pwd) {
-         return TRUE;
-      }
-      return FALSE;
+   //TODO, USE PASSWORD VEriFY
+   function check_user_pwd(string $pwd): bool {
+      return password_verify($pwd, $this->pwd);
    }
 
    // activate pending user
@@ -142,6 +127,26 @@ class User {
       return ;
    }
 
+   function change_pwd(string $id): void {
+      // First update, pwd column in corresponding verified_user table entry
+      $sql = 'UPDATE verified_users
+         SET userpwd = :newpwd
+         WHERE username=:usern';
+      $pdo = connect_todb();
+      $statement = $pdo->prepare($sql);
+      $statement->bindParam(':newpwd', $this->pwd);
+      $statement->bindParam(':usern', $this->username);
+      $statement->execute();
+      // Second update, reset_hash in corresponding reset_pwd_hashes table entry
+      $sql = "UPDATE reset_pwd_hashes
+         SET reset_hash=:hash
+         WHERE userid=:userid";
+      $statement = $pdo->prepare($sql);
+      $statement->bindParam(':hash', $this->reset_hash);
+      $statement->bindParam(':userid', $id);
+      $statement->execute();
+      return ;
+   }
 
    // takes email of user and
    // prior generated activation code for

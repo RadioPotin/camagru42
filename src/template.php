@@ -32,8 +32,8 @@
     ?>
   </body>
   <?php
-    if (empty($script))
-      $script = "";
-    echo $script;
+    if (!empty($script)){
+      echo $script;
+    }
   ?>
 </html>
