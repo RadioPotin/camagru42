@@ -34,8 +34,19 @@ function create_tables($pdo) : void {
         "CREATE TABLE IF NOT EXISTS reset_pwd_hashes(
             reset_hash TEXT NOT NULL,
             userid INTEGER NOT NULL,
-            FOREIGN KEY (userid) REFERENCES verified_users(userid)
-            )"];
+
+            CONSTRAINT userid FOREIGN KEY (userid)
+            REFERENCES verified_users(userid)
+            ON DELETE CASCADE
+            )",
+
+        "CREATE TABLE IF NOT EXISTS user_galleries(
+            img BLOB,
+            userid INTEGER NOT NULL,
+
+            CONSTRAINT userid FOREIGN KEY (userid)
+            REFERENCES verified_users(userid)
+            ON DELETE CASCADE)"];
 
     foreach ($commands as $command) {
         $pdo->exec($command);

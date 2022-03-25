@@ -21,7 +21,7 @@ if (isset($_POST["submit"])) {
     $pwdd = $_POST["pwdd"];
 
     //Error handlers
-    validate_signup_form($email, $username, $pwd, $pwdd);
+    validate_nonempty_form($email, $username, $pwd, $pwdd);
     validate_username($username);
     validate_email($email);
     match_pwds($pwd, $pwdd);

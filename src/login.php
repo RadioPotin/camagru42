@@ -23,7 +23,9 @@ if (isset($_POST["submit"])) {
     //Error handlers
     validate_login_form($username_or_email, $pwd);
 
-    $row = fetch_user_info($username_or_email);
+    if (!($row = fetch_user_info($username_or_email))){
+      err("No such user, you should signup");
+    }
 
     $username = $row[0]["username"];
     $email = $row[0]["email"];
@@ -37,6 +39,7 @@ if (isset($_POST["submit"])) {
     } else {
       $_SESSION["user"] = true;
       $_SESSION["username"] = $username;
+      $_SESSION["email"] = $email;
       $body = "<h1>LOGGED IN!</h1>";
       include_once 'picture.php';
     }

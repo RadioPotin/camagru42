@@ -211,6 +211,31 @@ MESSAGE;
          die("ERROR, user.php: " . $errorMessage);
       }
    }
+
+   function delete_gallery($id) {
+      $pdo = connect_todb();
+      $sql = 'DELETE FROM user_galleries
+         WHERE userid=:id';
+      $statement = $pdo->prepare($sql);
+      $statement->bindParam(':id', $id);
+      $statement->execute();
+      return ;
+   }
+
+   function delete_account($id): void {
+      $pdo = connect_todb();
+      $sql = 'DELETE FROM reset_pwd_hashes
+         WHERE userid=:id';
+      $statement = $pdo->prepare($sql);
+      $statement->bindParam(':id', $id);
+      $statement->execute();
+      $sql = 'DELETE FROM verified_users
+         WHERE userid=:id';
+      $statement = $pdo->prepare($sql);
+      $statement->bindParam(':id', $id);
+      $statement->execute();
+      return ;
+   }
 }
 
 ?>
