@@ -22,7 +22,8 @@ class User {
    // check if given USERNAME or EMAIL are already in login table
    public function exists_in_pending(): bool {
       $pdo = connect_todb();
-      $sql = "SELECT * FROM pending_users
+      $sql =
+         "SELECT * FROM pending_users
          WHERE
          username = :usern
          OR
@@ -233,6 +234,34 @@ MESSAGE;
          WHERE userid=:id';
       $statement = $pdo->prepare($sql);
       $statement->bindParam(':id', $id);
+      $statement->execute();
+      return ;
+   }
+
+   function change_username($newname)
+   {
+      // update username to new own
+      $sql = 'UPDATE verified_users
+         SET username = :newname
+         WHERE username=:username';
+      $pdo = connect_todb();
+      $statement = $pdo->prepare($sql);
+      $statement->bindParam(':newname', $newname);
+      $statement->bindParam(':username', $this->username);
+      $statement->execute();
+      return ;
+   }
+
+   function change_email($newemail)
+   {
+      // update username to new own
+      $sql = 'UPDATE verified_users
+         SET email = :newemail
+         WHERE username=:username';
+      $pdo = connect_todb();
+      $statement = $pdo->prepare($sql);
+      $statement->bindParam(':newemail', $newemail);
+      $statement->bindParam(':username', $this->username);
       $statement->execute();
       return ;
    }

@@ -12,8 +12,8 @@ $body = '<h1>Welcome, ' . $username . '!</h1>
     <div id="usersettings">
         <h2>User Information</h2>
         <div class="usersettingsblock">
-            <p>Your current username: '. $userinfo[0]["username"] . '</p>
-            <p>Your current email: '. $userinfo[0]["email"] . '</p>
+            <p>Your current username: '. $userinfo[0]["username"] . ' <a href="/changeusername.php">CHANGE MY USERNAME</a></p>
+            <p>Your current email: '. $userinfo[0]["email"] . ' <a href="/changeemail.php">CHANGE MY EMAIL</a></p>
             <p>Your personal Gallery: <a href="#">HERE</a></p>
         </div>
     </div>

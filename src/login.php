@@ -41,7 +41,7 @@ if (isset($_POST["submit"])) {
       $_SESSION["username"] = $username;
       $_SESSION["email"] = $email;
       $body = "<h1>LOGGED IN!</h1>";
-      include_once 'picture.php';
+      include_once 'template.php';
     }
   }
 } else {
