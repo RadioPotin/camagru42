@@ -17,10 +17,22 @@ let video = document.getElementById('video');
 let canvas = document.getElementById('canvas');
 let photo = document.getElementById('photo');
 let startbutton = document.getElementById('startbutton');
+let savepic = document.getElementById('savepic');
+
+// show/hide button savepicture
+function show_button()
+{
+    savepic.className = 'show';
+}
+
+function hide_button()
+{
+    savepic.className = 'hide';
+}
 
 // Gain access to video stream
 navigator.mediaDevices.getUserMedia({video: true, audio: false})
-  // success callback
+// success callback
   .then(
     function(stream)
     {
@@ -30,13 +42,13 @@ navigator.mediaDevices.getUserMedia({video: true, audio: false})
       video.play();
     }
   )
-  // failure callback
-    .catch(
-      function(err)
-      {
-        console.log("An error occurred: " + err);
-      }
-    );
+// failure callback
+  .catch(
+    function(err)
+    {
+      console.log("An error occurred: " + err);
+    }
+  );
 
 video.addEventListener('canplay',
   function(ev)
@@ -92,12 +104,54 @@ function takepicture() {
     clearphoto();
   }
 }
-  startbutton.addEventListener('click',
-    function(ev)
-    {
-      takepicture();
-      ev.preventDefault();
-    },
-    false);
+startbutton.addEventListener('click',
+  function(ev)
+  {
+    takepicture();
+    ev.preventDefault();
+    show_button();
+  },
+  false);
 
-  clearphoto();
+clearphoto();
+
+// This part handles the upload of an image through the file input
+
+let upload = document.getElementById('upload');
+    upload.addEventListener('change', handleImage, false);
+let ctx = canvas.getContext('2d');
+
+
+function handleImage(e){
+    let reader = new FileReader();
+    reader.onload = function(event){
+        let img = new Image();
+        img.onload = function(){
+            canvas.width = img.width;
+            canvas.height = img.height;
+            ctx.drawImage(img,0,0);
+        }
+        img.src = event.target.result;
+    }
+    reader.readAsDataURL(e.target.files[0]);
+    show_button();
+}
+
+// This part handles the saving of the image in the canvas
+// to a hidden form that sends the data into a PHP script
+// Php is then converted to a b64 string that is then stored in the gallery table referencing the user's id as fk
+
+document.getElementById('hidden').value = canvas.toDataURL('image/png, image/jpeg');
+
+/*
+function data_to_hidden_form(){
+  let pic = canvas.DataToUrl();
+}
+
+startbutton.addEventListener('click',
+  function(ev)
+  {
+    data_to_hidden_form();
+
+  },
+  false);

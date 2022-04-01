@@ -64,11 +64,10 @@ h1.text-left {
   margin-bottom: 0.2em;
 }
 
-input[type=text], input[type=password], button {
+input[type=text], input[type=password], input[type=file], button {
     text-align:center;
     display: block;
     margin: auto;
-    border: 1px solid #818181;
 }
 
 .signup-form {
@@ -76,7 +75,11 @@ input[type=text], input[type=password], button {
     display: block;
     margin: auto;
 }
-/*
-#canvas {
+
+button.hide {
   display:none;
+}
+
+button.show {
+  display: inline;
 }
