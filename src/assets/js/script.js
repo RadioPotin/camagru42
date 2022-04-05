@@ -155,7 +155,7 @@ upload.addEventListener('change', handle_image, false);
 
 // This part handles the saving of the image in the canvas
 // to a hidden form that sends the data into a PHP script
-// php script extract b64 encoded image and sends it to the relevant DB
+// php script extract b64 encoded image and saves it to the relevant DB
 
 function ajaxSendPictureToPhp(entry, token) {
   let params = "entry=" + entry + "&token=" + token + "&submit=submit";

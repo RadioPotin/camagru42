@@ -13,14 +13,14 @@ if (isset($_POST["submit"])) {
     echo "NO TOKEN SAVE TO GALLERY";
     exit;
   } else {
-      $username = $_SESSION["username"];
-      $email = $_SESSION["email"];
-      $b64_image = str_replace(" ","+",$_POST["entry"]);
-      // MAKE DB BLOB STUFSJFJLDKF
-      echo '<img src="'.$b64_image.'">';
-
+    $username = $_SESSION["username"];
+    $email = $_SESSION["email"];
+    $b64_image = str_replace(" ","+",$_POST["entry"]);
+    // MAKE DB BLOB STUFSJFJLDKF
+    $user = new User($username, "", $email);
+    $user->add_pic_to_gallery($b64_image);
   }
 } else {
-    err('<h1>trying to be sneaky again ?</h1>');
+  err('<h1>trying to be sneaky again ?</h1>');
 }
 ?>

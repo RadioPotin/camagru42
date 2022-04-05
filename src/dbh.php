@@ -41,7 +41,7 @@ function create_tables($pdo) : void {
             )",
 
         "CREATE TABLE IF NOT EXISTS user_galleries(
-            img BLOB,
+            img BLOB NOT NULL,
             userid INTEGER NOT NULL,
 
             CONSTRAINT userid FOREIGN KEY (userid)

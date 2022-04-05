@@ -231,7 +231,7 @@ MESSAGE;
       $statement = $pdo->prepare($sql);
 
       $userinfo = fetch_user_info($this->username);
-      $id = $userinfo["userid"];
+      $id = $userinfo[0]["userid"];
 
       $statement->bindParam(':id', $id);
       $statement->execute();
@@ -241,13 +241,12 @@ MESSAGE;
    function add_pic_to_gallery($pic_b64)
    {
       $pdo = connect_todb();
-      $sql = 'INSERT INTO user_galleries (img, userid)
-         VALUES (:img, :id)
-         WHERE verified_users.userid=:id';
+      $sql = 'INSERT INTO user_galleries(img, userid)
+         VALUES (:img, :id)';
       $statement = $pdo->prepare($sql);
 
       $userinfo = fetch_user_info($this->username);
-      $id = $userinfo["userid"];
+      $id = $userinfo[0]["userid"];
 
       $statement->bindParam(':id', $id);
       $statement->bindParam(':img', $pic_b64);

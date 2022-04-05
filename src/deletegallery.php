@@ -30,10 +30,6 @@ if (isset($_POST["submit"])) {
 
         $user->delete_gallery($id);
 
-        //unset session
-        unset($_SESSION["user"]);
-        unset($_SESSION["username"]);
-        unset($_SESSION["email"]);
         include_once("index.php");
     }
 } else {
@@ -46,8 +42,8 @@ if (isset($_POST["submit"])) {
             <input type="hidden" name="token" value="'.$_SESSION["token"].'">
             <input type="text" name="username" placeholder="Your username">
             <input type="text" name="email" placeholder="Your email">
-            <input type="text" name="pwd" placeholder="Your Password">
-            <input type="text" name="pwdd" placeholder="Confirm your Password">
+            <input type="password" name="pwd" placeholder="Your Password">
+            <input type="password" name="pwdd" placeholder="Confirm your Password">
             <button type="submit" name="submit">Confirm deletion</button>
             <p style="color:red">There will be NO turning back beyond this point.</p>
             <br />
