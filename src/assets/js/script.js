@@ -13,21 +13,37 @@ let streaming = false;
 // The letious HTML elements we need to configure or control. These
 // will be set by the startup() function.
 
+// video feed
 let video = document.getElementById('video');
+
+// canvas where all the fun happens
 let canvas = document.getElementById('canvas');
+// canvas child img element where uploaded or taken pictures are drawn
 let photo = document.getElementById('photo');
-let startbutton = document.getElementById('startbutton');
+
+// take picture button
+let takepic = document.getElementById('takepic');
+// save picture to gallery button
 let savepic = document.getElementById('savepic');
+
+// upload image file button
+let upload = document.getElementById('upload');
+
+// hidden form to submit when user wants to save his art
+let form = document.getElementById('hiddenform');
+// input element in the hidden form to send to the php script that queries the DB
+let gallery_entry = document.getElementById('gallery_entry');
+
 
 // show/hide button savepicture
 function show_button()
 {
-    savepic.className = 'show';
+  savepic.className = 'show';
 }
 
 function hide_button()
 {
-    savepic.className = 'hide';
+  savepic.className = 'hide';
 }
 
 // Gain access to video stream
@@ -104,7 +120,7 @@ function takepicture() {
     clearphoto();
   }
 }
-startbutton.addEventListener('click',
+takepic.addEventListener('click',
   function(ev)
   {
     takepicture();
@@ -116,42 +132,46 @@ startbutton.addEventListener('click',
 clearphoto();
 
 // This part handles the upload of an image through the file input
+function handle_image(e){
+  let reader = new FileReader();
 
-let upload = document.getElementById('upload');
-    upload.addEventListener('change', handleImage, false);
-let ctx = canvas.getContext('2d');
+  reader.onload = function(event){
+    let img = new Image();
 
+    img.onload = function(){
+      let ctx = canvas.getContext('2d');
 
-function handleImage(e){
-    let reader = new FileReader();
-    reader.onload = function(event){
-        let img = new Image();
-        img.onload = function(){
-            canvas.width = img.width;
-            canvas.height = img.height;
-            ctx.drawImage(img,0,0);
-        }
-        img.src = event.target.result;
+      canvas.width = width;
+      canvas.height = height;
+      ctx.drawImage(img, 0, 0, width, height);
     }
-    reader.readAsDataURL(e.target.files[0]);
-    show_button();
+    img.src = event.target.result;
+  }
+  reader.readAsDataURL(e.target.files[0]);
+  show_button();
 }
+
+upload.addEventListener('change', handle_image, false);
 
 // This part handles the saving of the image in the canvas
 // to a hidden form that sends the data into a PHP script
-// Php is then converted to a b64 string that is then stored in the gallery table referencing the user's id as fk
+// php script extract b64 encoded image and sends it to the relevant DB
 
-document.getElementById('hidden').value = canvas.toDataURL('image/png, image/jpeg');
+function ajaxSendPictureToPhp(entry, token) {
+  let params = "entry=" + entry + "&token=" + token + "&submit=submit";
 
-/*
-function data_to_hidden_form(){
-  let pic = canvas.DataToUrl();
+  let httpRequest = new XMLHttpRequest();
+  httpRequest.open('POST', 'savetogallery.php', true);
+  httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  httpRequest.send(params);
+  return;
 }
 
-startbutton.addEventListener('click',
-  function(ev)
-  {
-    data_to_hidden_form();
+function data_to_hidden_form(e){
+  let pic = canvas.toDataURL();
+  let token = document.getElementsByName('token');
 
-  },
-  false);
+  ajaxSendPictureToPhp(pic, token[0].value);
+}
+
+savepic.addEventListener('click', data_to_hidden_form, false);

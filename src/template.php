@@ -21,19 +21,22 @@
           }
           else {
             echo '<li><a href="picture.php">Cumagru</a></li>
-                <li><a href="signout.php">Sign out</a></li>
-                <li><a href="myprofile.php">My Profile</a></li>';
+        <li><a href="signout.php">Sign out</a></li>
+        <li><a href="myprofile.php">My Profile</a></li>';
           }
         ?>
+
       </ul>
     </nav>
     <?php
       echo $body;
     ?>
+
   </body>
   <?php
     if (!empty($script)){
       echo $script;
     }
   ?>
+
 </html>

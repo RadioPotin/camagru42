@@ -223,6 +223,38 @@ MESSAGE;
       return ;
    }
 
+   function return_all_gallery()
+   {
+      $pdo = connect_todb();
+      $sql = 'SELECT img FROM user_galleries
+         WHERE userid=:id';
+      $statement = $pdo->prepare($sql);
+
+      $userinfo = fetch_user_info($this->username);
+      $id = $userinfo["userid"];
+
+      $statement->bindParam(':id', $id);
+      $statement->execute();
+      return $statement->fetchAll();
+   }
+
+   function add_pic_to_gallery($pic_b64)
+   {
+      $pdo = connect_todb();
+      $sql = 'INSERT INTO user_galleries (img, userid)
+         VALUES (:img, :id)
+         WHERE verified_users.userid=:id';
+      $statement = $pdo->prepare($sql);
+
+      $userinfo = fetch_user_info($this->username);
+      $id = $userinfo["userid"];
+
+      $statement->bindParam(':id', $id);
+      $statement->bindParam(':img', $pic_b64);
+      $statement->execute();
+      return ;
+   }
+
    function delete_account($id): void {
       $pdo = connect_todb();
       $sql = 'DELETE FROM reset_pwd_hashes

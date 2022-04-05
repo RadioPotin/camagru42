@@ -8,7 +8,7 @@ $body =
         <h1>Try it out</h1>
         <div class="camera">
             <video id="video">Video stream not available.</video>
-            <button id="startbutton">Take photo</button>
+            <button id="takepic">Take photo</button>
             <input type="file" id="upload" accept="image/png, image/jpg">
         </div>
         <canvas id="canvas">
@@ -17,10 +17,8 @@ $body =
             </div>
         </canvas>
         <button id="savepic" class="hide">Save your picture to your gallery</button>
-        <form id="hiddenform">
-            <input type="hidden" name="token" value="'.$_SESSION["token"].'">
-        </form>
+        <input type="hidden" name="token" value="'.$_SESSION["token"].'">
     </div>';
-$script = '<script defer type="text/javascript" src="assets/js/script.js"></script>';
+$script = '<script type="text/javascript" src="assets/js/script.js" defer></script>';
 include ("template.php");
 ?>
