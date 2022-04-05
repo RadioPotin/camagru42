@@ -37,11 +37,11 @@ function create_tables($pdo) : void {
 
             CONSTRAINT userid FOREIGN KEY (userid)
             REFERENCES verified_users(userid)
-            ON DELETE CASCADE
-            )",
+            ON DELETE CASCADE)",
 
         "CREATE TABLE IF NOT EXISTS user_galleries(
             img BLOB NOT NULL,
+            creation_date datetime NOT NULL,
             userid INTEGER NOT NULL,
 
             CONSTRAINT userid FOREIGN KEY (userid)

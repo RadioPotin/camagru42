@@ -91,4 +91,24 @@ function check_user_pwd($user, $pwd) {
     }
     return TRUE;
 }
+
+function output_gallery($gallery)
+{
+    $body = '<table class="my_gallery">';
+    foreach ($gallery as $img)
+    {
+        $body .='
+    <tr>
+        <td>
+            <img id="'.$img["rowid"].'" src="'.$img["img"].'">
+            <br/>
+            CREATED: '.$img["creation_date"].'
+            <br/>
+            BY: '.$img["username"].'
+        </td>
+    </tr>';
+    }
+    $body .= "</table>";
+    return $body;
+}
 ?>

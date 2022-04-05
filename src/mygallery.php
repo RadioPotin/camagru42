@@ -19,13 +19,11 @@ if (!isset($_SESSION["user"]) && !isset($_SESSION["username"])) {
         err("<h1>nothing here, pal, try taking a pic or two</h1>");
     }
     else {
-        $body = '<table class="table my_table">';
-        foreach ($gallery as $img)
-        {
-            $body .= '<tr><td><img src="'.$img["img"].'"><br /></td></tr>';
-        }
-        $body .= "</table>";
+        // output_gallery is in lib.php
+        $body = output_gallery($gallery);
+        include_once 'template.php';
+        return;
     }
-    include_once 'template.php';
+    include_once 'index.php';
 }
 ?>

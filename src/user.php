@@ -226,8 +226,10 @@ MESSAGE;
    function return_all_gallery()
    {
       $pdo = connect_todb();
-      $sql = 'SELECT img FROM user_galleries
-         WHERE userid=:id';
+      $sql = 'SELECT user_galleries.rowid, img, creation_date, verified_users.username as username
+         FROM user_galleries, verified_users
+         WHERE user_galleries.userid=:id
+         AND verified_users.userid=:id';
       $statement = $pdo->prepare($sql);
 
       $userinfo = fetch_user_info($this->username);
@@ -241,14 +243,16 @@ MESSAGE;
    function add_pic_to_gallery($pic_b64)
    {
       $pdo = connect_todb();
-      $sql = 'INSERT INTO user_galleries(img, userid)
-         VALUES (:img, :id)';
+      $sql = 'INSERT INTO user_galleries(img, creation_date, userid)
+         VALUES (:img, :date, :id)';
       $statement = $pdo->prepare($sql);
 
       $userinfo = fetch_user_info($this->username);
       $id = $userinfo[0]["userid"];
 
+      $date = date('Y-m-d H:i:s', time());
       $statement->bindParam(':id', $id);
+      $statement->bindParam(':date', $date);
       $statement->bindParam(':img', $pic_b64);
       $statement->execute();
       return ;
@@ -271,7 +275,7 @@ MESSAGE;
 
    function change_username($newname)
    {
-      // update username to new own
+      // update username to new one
       $sql = 'UPDATE verified_users
          SET username = :newname
          WHERE username=:username';
@@ -285,7 +289,7 @@ MESSAGE;
 
    function change_email($newemail)
    {
-      // update username to new own
+      // update email to new one
       $sql = 'UPDATE verified_users
          SET email = :newemail
          WHERE username=:username';
