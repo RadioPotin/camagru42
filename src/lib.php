@@ -92,6 +92,9 @@ function check_user_pwd($user, $pwd) {
     return TRUE;
 }
 
+// need to add to this function a call to a function that returns a link to a specific user gallery when given $img["username"]
+// a comment section for each pic
+// a LIKE button for each pic
 function output_gallery($gallery)
 {
     $body = '<table class="my_gallery">';
@@ -111,4 +114,5 @@ function output_gallery($gallery)
     $body .= "</table>";
     return $body;
 }
+
 ?>

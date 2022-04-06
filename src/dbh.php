@@ -46,7 +46,33 @@ function create_tables($pdo) : void {
 
             CONSTRAINT userid FOREIGN KEY (userid)
             REFERENCES verified_users(userid)
-            ON DELETE CASCADE)"];
+            ON DELETE CASCADE)",
+
+        "CREATE TABLE IF NOT EXISTS comments(
+            img_id INTEGER NOT NULL,
+            userid INTEGER NOT NULL,
+            content TEXT NOT NULL,
+
+            CONSTRAINT img_id FOREIGN KEY (img_id)
+            REFERENCES user_galleries(rowid)
+            ON DELETE CASCADE,
+
+            CONSTRAINT userid FOREIGN KEY (userid)
+            REFERENCES verified_users(userid)
+            ON DELETE CASCADE)",
+
+        "CREATE TABLE IF NOT EXISTS likes(
+            img_id INTEGER NOT NULL,
+            userid INTEGER NOT NULL,
+
+            CONSTRAINT img_id FOREIGN KEY (img_id)
+            REFERENCES user_galleries(rowid)
+            ON DELETE CASCADE,
+
+            CONSTRAINT userid FOREIGN KEY (userid)
+            REFERENCES verified_users(userid)
+            ON DELETE CASCADE)"
+        ];
 
     foreach ($commands as $command) {
         $pdo->exec($command);
@@ -73,6 +99,17 @@ function connect_todb() : object {
     return ($pdo);
 }
 
+function count_img_entries()
+{
+    $pdo = connect_todb();
+    $sql = "SELECT COUNT(*)
+        FROM user_galleries ";
+    $statement = $pdo->prepare($sql);
+    $statement->execute();
+    $nb = $statement->fetchColumn();
+    return $nb;
+}
+
 function fetch_user_info($email_or_uid) {
     $pdo = connect_todb();
     $sql = "SELECT username,email,userpwd,userid
@@ -91,6 +128,46 @@ function fetch_user_info($email_or_uid) {
     } else {
         return null;
     }
+}
+
+function fetch_all_galleries()
+{
+    $pdo = connect_todb();
+    $sql = "SELECT user_galleries.rowid, img, creation_date, verified_users.username as username
+        FROM user_galleries, verified_users
+        ORDER BY creation_date DESC";
+    $statement = $pdo->prepare($sql);
+    $statement->execute();
+    $row = $statement->fetchAll();
+    if (!empty($row)) {
+        return $row;
+    } else {
+        return null;
+    }
+}
+
+function fetch_pagination_elements($offset, $limit)
+{
+    $pdo = connect_todb();
+    $sql = "SELECT user_galleries.rowid, img, creation_date, verified_users.username as username
+        FROM user_galleries, verified_users
+        ORDER BY creation_date DESC
+        LIMIT :offset, :limit";
+    $statement = $pdo->prepare($sql);
+    $statement->bindParam(":offset", $offset);
+    $statement->bindParam(":limit", $limit);
+    $statement->execute();
+    $row = $statement->fetchAll();
+    if (!empty($row)) {
+        return $row;
+    } else {
+        return null;
+    }
+}
+
+function return_comment_section($pic_id)
+{
+
 }
 
 

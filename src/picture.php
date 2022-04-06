@@ -11,11 +11,11 @@ $body =
             <button id="takepic">Take photo</button>
             <input type="file" id="upload" accept="image/png, image/jpg">
         </div>
-        <canvas id="canvas">
-            <div class="output">
-                <img id="photo" alt="The screen capture will appear in this box.">
-            </div>
+        <canvas id="canvas" >
         </canvas>
+        <div class="output" style="display:none">
+            <img id="photo">
+        </div>
         <button id="savepic" class="hide">Save your picture to your gallery</button>
         <input type="hidden" name="token" value="'.$_SESSION["token"].'">
     </div>';

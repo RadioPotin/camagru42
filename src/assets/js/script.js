@@ -94,7 +94,7 @@ video.addEventListener('canplay',
 function clearphoto()
 {
   let context = canvas.getContext('2d');
-  context.fillStyle = "#AAA";
+  context.fillStyle = "transparent";
   context.fillRect(0, 0, canvas.width, canvas.height);
 
   let data = canvas.toDataURL('image/png');
