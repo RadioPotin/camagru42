@@ -103,13 +103,15 @@ class User {
 
    // activate pending user
    function activate_user() : void {
+      $default_notif_mode = TRUE;
       //first, add user to verified users
-      $sql = 'INSERT INTO verified_users (username, email, userpwd)
-         VALUES (:usern, :email, :pwd)';
+      $sql = 'INSERT INTO verified_users (username, email, notifications, userpwd)
+         VALUES (:usern, :email, :notifs, :pwd)';
       $pdo = connect_todb();
       $statement = $pdo->prepare($sql);
       $statement->bindParam(':usern', $this->username);
       $statement->bindParam(':email', $this->email);
+      $statement->bindParam(':notifs', $default_notif_mode);
       $statement->bindParam(':pwd', $this->pwd);
       $statement->execute();
       //get userid from later Foreign Key for RESET_PWD_HASHES table
@@ -129,7 +131,7 @@ class User {
    }
 
    function change_pwd(string $id): void {
-      // First update, pwd column in corresponding verified_user table entry
+      // First update, pwd column in corresponding verified_users table entry
       $sql = 'UPDATE verified_users
          SET userpwd = :newpwd
          WHERE username=:usern';
@@ -240,8 +242,46 @@ MESSAGE;
       return $statement->fetchAll();
    }
 
-   function add_pic_to_gallery($pic_b64)
+   function fetch_pagination_elements_from_given_user($offset, $limit)
    {
+      $pdo = connect_todb();
+      $sql = "SELECT user_galleries.rowid, img, creation_date, verified_users.username as username
+         FROM user_galleries, verified_users
+         WHERE user_galleries.userid=:id
+         AND verified_users.userid=:id
+         ORDER BY creation_date DESC
+         LIMIT :offset, :limit";
+      $statement = $pdo->prepare($sql);
+
+      $userinfo = fetch_user_info($this->username);
+      $id = $userinfo[0]["userid"];
+
+      $statement->bindParam(':id', $id);
+      $statement->bindParam(":offset", $offset);
+      $statement->bindParam(":limit", $limit);
+      $statement->execute();
+      $row = $statement->fetchAll();
+      if (!empty($row)) {
+         return $row;
+      } else {
+         return null;
+      }
+   }
+
+   function count_img_entries_of_user() {
+      $pdo = connect_todb();
+      $sql = "SELECT COUNT(*)
+         FROM user_galleries, verified_users
+         WHERE verified_users.username=:username
+         AND user_galleries.userid=verified_users.userid";
+      $statement = $pdo->prepare($sql);
+      $statement->bindParam(":username", $this->username);
+      $statement->execute();
+      $nb = $statement->fetchColumn();
+      return $nb;
+   }
+
+   function add_pic_to_gallery(string $pic_b64) {
       $pdo = connect_todb();
       $sql = 'INSERT INTO user_galleries(img, creation_date, userid)
          VALUES (:img, :date, :id)';
@@ -273,8 +313,7 @@ MESSAGE;
       return ;
    }
 
-   function change_username($newname)
-   {
+   function change_username($newname) {
       // update username to new one
       $sql = 'UPDATE verified_users
          SET username = :newname
@@ -287,8 +326,7 @@ MESSAGE;
       return ;
    }
 
-   function change_email($newemail)
-   {
+   function change_email($newemail) {
       // update email to new one
       $sql = 'UPDATE verified_users
          SET email = :newemail
@@ -299,6 +337,42 @@ MESSAGE;
       $statement->bindParam(':username', $this->username);
       $statement->execute();
       return ;
+   }
+
+   function has_notifications() {
+      $pdo = connect_todb();
+      $sql = "SELECT notifications
+         FROM verified_users
+         WHERE username=:usern";
+      $statement = $pdo->prepare($sql);
+      $statement->bindParam(":usern", $this->username);
+      $statement->execute();
+      $bool = $statement->fetchColumn();
+      return $bool;
+   }
+
+   function activate_notifications() {
+      $pdo = connect_todb();
+      $sql = "UPDATE verified_users
+         SET notifications=TRUE
+         WHERE username=:usern";
+      $statement = $pdo->prepare($sql);
+      $statement->bindParam(":usern", $this->username);
+      $statement->execute();
+      $statement->fetchColumn();
+      return ;
+   }
+
+   function deactivate_notifications() {
+      $pdo = connect_todb();
+      $sql = "UPDATE verified_users
+         SET notifications=FALSE
+         WHERE username=:usern";
+      $statement = $pdo->prepare($sql);
+      $statement->bindParam(":usern", $this->username);
+      $statement->execute();
+      $statement->fetchColumn();
+      return;
    }
 }
 

@@ -7,6 +7,15 @@ $username = $_SESSION["username"];
 $userinfo = fetch_user_info($username);
 $user = new User($userinfo[0]["username"], $userinfo[0]["userpwd"], $userinfo[0]["email"]);
 
+if (isset($_GET["notifications"])) {
+    $notifs = $_GET["notifications"];
+    if ($notifs) {
+        $user->activate_notifications();
+    } else {
+        $user->deactivate_notifications();
+    }
+}
+
 $body = '<h1>Welcome, ' . $username . '!</h1>
     <br />
     <div id="usersettings">
@@ -21,9 +30,17 @@ $body = '<h1>Welcome, ' . $username . '!</h1>
     <br />
     <div id="usersettings">
         <h2>User Preferences</h2>
-        <div class="usersettingsblock">
-            <p>Activate/Deactivate email notifications on comment ? YES/NO</p>
-        </div>
+        <div class="usersettingsblock">';
+            $notifications = $user->has_notifications();
+            if ($notifications) {
+                $option = "<p>NOTIFICATIONS : ON ";
+                $option .= '<a href="/myprofile.php?notifications=0">TURN OFF</a></p>';
+            } else {
+                $option = "<p>NOTIFICATIONS : OFF ";
+                $option .= '<a href="/myprofile.php?notifications=1">TURN ON</a></p>';
+            }
+            $body .= $option;
+        $body .= '</div>
     </div>
     <hr />
     <br />

@@ -22,6 +22,7 @@ function create_tables($pdo) : void {
             userid INTEGER PRIMARY KEY AUTOINCREMENT,
             username TEXT NOT NULL UNIQUE,
             email TEXT NOT NULL UNIQUE,
+            notifications INTEGER NOT NULL,
             userpwd TEXT NOT NULL)",
 
         "CREATE TABLE IF NOT EXISTS pending_users(
@@ -135,6 +136,7 @@ function fetch_all_galleries()
     $pdo = connect_todb();
     $sql = "SELECT user_galleries.rowid, img, creation_date, verified_users.username as username
         FROM user_galleries, verified_users
+        WHERE user_galleries.userid=verified_users.userid
         ORDER BY creation_date DESC";
     $statement = $pdo->prepare($sql);
     $statement->execute();
@@ -146,11 +148,12 @@ function fetch_all_galleries()
     }
 }
 
-function fetch_pagination_elements($offset, $limit)
+function fetch_pagination_elements_from_all_galleries($offset, $limit)
 {
     $pdo = connect_todb();
     $sql = "SELECT user_galleries.rowid, img, creation_date, verified_users.username as username
         FROM user_galleries, verified_users
+        WHERE user_galleries.userid=verified_users.userid
         ORDER BY creation_date DESC
         LIMIT :offset, :limit";
     $statement = $pdo->prepare($sql);

@@ -4,5 +4,5 @@ unset($_SESSION["user"]);
 unset($_SESSION["username"]);
 unset($_SESSION["email"]);
 
-include("index.php");
+include_once("index.php");
 ?>

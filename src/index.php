@@ -12,7 +12,7 @@ if (isset($_GET["page"])) {
 // counting the offset
 $offset = ($pagenum - 1) * $pic_limit;
 
-$all_galleries = fetch_pagination_elements($offset, $pic_limit);
+$all_galleries = fetch_pagination_elements_from_all_galleries($offset, $pic_limit);
 if ($all_galleries !== null) {
     $body = output_gallery($all_galleries);
 } else {
