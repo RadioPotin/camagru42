@@ -17,7 +17,6 @@ if (isset($_GET["notifications"])) {
 }
 
 $body = '<h1>Welcome, ' . $username . '!</h1>
-    <br />
     <div id="usersettings">
         <h2>User Information</h2>
         <div class="usersettingsblock">
@@ -26,8 +25,7 @@ $body = '<h1>Welcome, ' . $username . '!</h1>
             <p>Your personal Gallery: <a href="/mygallery.php">HERE</a></p>
         </div>
     </div>
-    <hr />
-    <br />
+    <hr class="featurette-divider"/>
     <div id="usersettings">
         <h2>User Preferences</h2>
         <div class="usersettingsblock">';
@@ -42,13 +40,12 @@ $body = '<h1>Welcome, ' . $username . '!</h1>
             $body .= $option;
         $body .= '</div>
     </div>
-    <hr />
-    <br />
+    <hr class="featurette-divider"/>
     <div id="dangerzone">
         <h2>Danger zone &#x1F431</h2>
-        <a href="/deletegallery.php" style="color:red">Delete all your pictures</a>
+        <a href="/deletegallery.php">Delete all your pictures</a>
         <br />
-        <a href="/deleteaccount.php" style="color:red">Delete my account</a>
+        <a href="/deleteaccount.php">Delete my account</a>
     </div>
     ';
 

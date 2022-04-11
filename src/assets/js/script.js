@@ -29,11 +29,8 @@ let savepic = document.getElementById('savepic');
 // upload image file button
 let upload = document.getElementById('upload');
 
-// hidden form to submit when user wants to save his art
-let form = document.getElementById('hiddenform');
 // input element in the hidden form to send to the php script that queries the DB
 let gallery_entry = document.getElementById('gallery_entry');
-
 
 // show/hide button savepicture
 function show_button()
@@ -157,7 +154,7 @@ upload.addEventListener('change', handle_image, false);
 // to a hidden form that sends the data into a PHP script
 // php script extract b64 encoded image and saves it to the relevant DB
 
-function ajaxSendPictureToPhp(entry, token) {
+function sendPictureToPhp(entry, token) {
   let params = "entry=" + entry + "&token=" + token + "&submit=submit";
 
   let httpRequest = new XMLHttpRequest();
@@ -171,7 +168,7 @@ function data_to_hidden_form(e){
   let pic = canvas.toDataURL();
   let token = document.getElementsByName('token');
 
-  ajaxSendPictureToPhp(pic, token[0].value);
+  sendPictureToPhp(pic, token[0].value);
 }
 
 savepic.addEventListener('click', data_to_hidden_form, false);

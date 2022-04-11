@@ -1,9 +1,70 @@
+
+/* GENERAL ON */
 body {
-  padding-top: 3rem;
   padding-bottom: 3rem;
   background-color: #EEEEEE;
   line-height: 1.6;
   font-size: 18px;
+}
+
+h1 {
+    display: block;
+    text-align: center;
+    font-size: 4em;
+    margin-top: 0.67em;
+    margin-bottom: 0.67em;
+    margin-left: 0;
+    margin-right: 0;
+    font-weight: bold;
+}
+
+h2 {
+    display: block;
+    font-size: 1.5em;
+    margin-top: 0.83em;
+    margin-bottom: 0.83em;
+    margin-left: 0;
+    margin-right: 0;
+    font-weight: bold;
+}
+
+h3 {
+    display: block;
+    font-size: 1.17em;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    margin-left: 0;
+    margin-right: 0;
+    font-weight: bold;
+}
+
+h4 {
+    display: block;
+    margin-top: 1.33em;
+    margin-bottom: 1.33em;
+    margin-left: 0;
+    margin-right: 0;
+    font-weight: bold;
+}
+
+h5 {
+    display: block;
+    font-size: .83em;
+    margin-top: 1.67em;
+    margin-bottom: 1.67em;
+    margin-left: 0;
+    margin-right: 0;
+    font-weight: bold;
+}
+
+h6 {
+    display: block;
+    font-size: .67em;
+    margin-top: 2.33em;
+    margin-bottom: 2.33em;
+    margin-left: 0;
+    margin-right: 0;
+    font-weight: bold;
 }
 
 h1, h2, h3, h4, h5, h6, p {
@@ -12,11 +73,23 @@ h1, h2, h3, h4, h5, h6, p {
 	line-height: 24px;
 }
 
-.logo {
+
+hr.featurette-divider {
+  margin: 3rem 0;
+}
+
+h1.text-left {
+  text-align: left;
+  margin-bottom: 0.2em;
+}
+/* GENERAL OFF */
+
+/* NAVIGATION ON */
+nav .logo {
 	max-width: 40px;
 }
 
- ul {
+ nav ul {
   list-style-type: none;
   margin: 0;
   padding: 0;
@@ -24,9 +97,9 @@ h1, h2, h3, h4, h5, h6, p {
   background-color: #333;
 }
 
-li {
+nav ul li {
   display: inline;
-  border-right: 1px solid #bbb;
+  border-right: 1px solid #333;
 	float: left;
 }
 
@@ -41,33 +114,23 @@ nav ul li a {
   padding: 10px 16px;
   text-decoration: none;
 }
+/* NAVIGATION OFF */
 
-.active {
-  background-color: #0433AD;
-}
-
-.featurette-divider {
-  margin: 5rem 0;
-}
-
-#page-title {
-  text-align: center;
-}
-
-h1 {
-  text-align: center;
-  margin-bottom: 2em;
-}
-
-h1.text-left {
-  text-align: left;
-  margin-bottom: 0.2em;
-}
-
-input[type=text], input[type=password], input[type=file], button {
+input[type=text], input[type=password] {
     text-align:center;
     display: block;
     margin: auto;
+}
+
+/* LOWER PAGE PAGINATION INFORMATION */
+#pagination {
+  margin: auto;
+  text-align: center;
+}
+
+/* DELETE PAGES (user's account and user's gallery)*/
+.warning {
+  color:red;
 }
 
 .signup-form {
@@ -76,10 +139,17 @@ input[type=text], input[type=password], input[type=file], button {
     margin: auto;
 }
 
+/* SAVE PICTURE BUTTON */
 button.hide {
   display:none;
 }
 
 button.show {
   display: inline;
+}
+
+/* GALLERY PAGES CSS */
+
+ul.my_gallery {
+  align-content: center;
 }

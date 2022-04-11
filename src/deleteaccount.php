@@ -29,6 +29,9 @@ if (isset($_POST["submit"])) {
         $id = $userinfo[0]["userid"];
 
         //delete account
+        $gallery = $user->return_all_gallery();
+
+        $user->delete_comments_of_gallery($gallery);
         $user->delete_gallery($id);
         $user->delete_account($id);
 
@@ -43,7 +46,7 @@ if (isset($_POST["submit"])) {
     {
         $_SESSION["token"] = generate_csrf_token();
         $body = '<section class="signup-form">
-            <h1 style="color:red">You are about to delete your account.</h1>
+            <h2 class="warning">You are about to delete your account.</h2>
             <form action="deleteaccount.php" method="post">
             <input type="hidden" name="token" value="'.$_SESSION["token"].'">
             <input type="text" name="username" placeholder="Your username">
@@ -51,9 +54,9 @@ if (isset($_POST["submit"])) {
             <input type="text" name="pwd" placeholder="Your Password">
             <input type="text" name="pwdd" placeholder="Confirm your Password">
             <button type="submit" name="submit">Confirm deletion</button>
-            <p style="color:red">There will be NO turning back beyond this point.</p>
+            <p class="warning">There will be NO turning back beyond this point.</p>
             <br />
-            <p style="color:red">Your entire gallery will be deleted along with your account</p>
+            <p class="warning">Your entire gallery will be deleted along with your account and comments</p>
             </form>
             </section>';
     } else {

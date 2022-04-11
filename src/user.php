@@ -215,33 +215,6 @@ MESSAGE;
       }
    }
 
-   function delete_gallery($id) {
-      $pdo = connect_todb();
-      $sql = 'DELETE FROM user_galleries
-         WHERE userid=:id';
-      $statement = $pdo->prepare($sql);
-      $statement->bindParam(':id', $id);
-      $statement->execute();
-      return ;
-   }
-
-   function return_all_gallery()
-   {
-      $pdo = connect_todb();
-      $sql = 'SELECT user_galleries.rowid, img, creation_date, verified_users.username as username
-         FROM user_galleries, verified_users
-         WHERE user_galleries.userid=:id
-         AND verified_users.userid=:id';
-      $statement = $pdo->prepare($sql);
-
-      $userinfo = fetch_user_info($this->username);
-      $id = $userinfo[0]["userid"];
-
-      $statement->bindParam(':id', $id);
-      $statement->execute();
-      return $statement->fetchAll();
-   }
-
    function fetch_pagination_elements_from_given_user($offset, $limit)
    {
       $pdo = connect_todb();
@@ -373,6 +346,61 @@ MESSAGE;
       $statement->execute();
       $statement->fetchColumn();
       return;
+   }
+
+   function delete_gallery($id) {
+      $pdo = connect_todb();
+      $sql = 'DELETE FROM user_galleries
+         WHERE userid=:id';
+      $statement = $pdo->prepare($sql);
+      $statement->bindParam(':id', $id);
+      $statement->execute();
+      return ;
+   }
+
+   function delete_comments_of_user($id) {
+      $pdo = connect_todb();
+      $sql = 'DELETE FROM comments
+         WHERE userid=:id';
+      $statement = $pdo->prepare($sql);
+      $statement->bindParam(':id', $id);
+      $statement->execute();
+      return ;
+   }
+
+   function delete_comments_of_img($img_id) {
+      $pdo = connect_todb();
+      $sql = 'DELETE FROM comments
+         WHERE img_id=:id';
+      $statement = $pdo->prepare($sql);
+      $statement->bindParam(':id', $img_id);
+      $statement->execute();
+      return ;
+   }
+
+   function delete_comments_of_gallery($gallery)
+   {
+      foreach ($gallery as $img)
+      {
+         $this->delete_comments_of_img($img["rowid"]);
+      }
+   }
+
+   function return_all_gallery()
+   {
+      $pdo = connect_todb();
+      $sql = 'SELECT user_galleries.rowid, img, creation_date, verified_users.username as username
+         FROM user_galleries, verified_users
+         WHERE user_galleries.userid=:id
+         AND verified_users.userid=:id';
+      $statement = $pdo->prepare($sql);
+
+      $userinfo = fetch_user_info($this->username);
+      $id = $userinfo[0]["userid"];
+
+      $statement->bindParam(':id', $id);
+      $statement->execute();
+      return $statement->fetchAll();
    }
 }
 

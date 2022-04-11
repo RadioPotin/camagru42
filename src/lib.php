@@ -92,27 +92,69 @@ function check_user_pwd($user, $pwd) {
     return TRUE;
 }
 
+function display_comment_box($img_id) {
+    if (isset($_SESSION["user"]) && isset($_SESSION["username"])) {
+        return '
+            <input type="hidden" name="token" value="'.$_SESSION["token"].'">
+            <input type="hidden" class="img_id" value="'.$img_id.'">
+            <textarea class="comment_text" placeholder="Comment goes here"></textarea>
+            <button class="submit_comment" value="'.$_SESSION["username"].'">
+                Submit comment
+            </button>';
+    } else {
+        return '
+            <div class="no_comment" style="margin-top: 20px;">
+                <h4 class="text-center">
+                    <a href="/login.php">Log in</a> or <a href="/signup.php"> Sign up</a> to post a comment
+                </h4>
+            </div>';
+    }
+    return "";
+}
+
+function display_comment_section($img_id) {
+    $comment_section = return_comment_section($img_id);
+    $body = '<button class="display_comments">Display Comments</button>';
+    $body .= '
+            <br />
+            <div class="comment_section" style="display:none;">
+                <ul>';
+    foreach ($comment_section as $comment)
+    {
+      $body .= '
+                    <li class="comment">
+                        <p class="author">AUTHOR: '.$comment["author"].'</p>
+                        <p class="comment"> COMMENT: '.$comment["content"].'</p>
+                        <br />
+                    </li>';
+    }
+    $body .= '
+                </ul>
+            </div>';
+    return $body;
+}
+
 // need to add to this function a call to a function that returns a link to a specific user gallery when given $img["username"]
 // a comment section for each pic
 // a LIKE button for each pic
 function output_gallery($gallery)
 {
-    $body = '<table class="my_gallery">';
+    $_SESSION["token"] = generate_csrf_token();
+    $body = '<ul class="my_gallery">';
     foreach ($gallery as $img)
     {
         $body .='
-    <tr>
-        <td>
+        <li class="art_piece">
             <img id="'.$img["rowid"].'" src="'.$img["img"].'">
-            <br/>
-            CREATED: '.$img["creation_date"].'
-            <br/>
-            BY: '.$img["username"].'
-        </td>
-    </tr>';
+            <p class="creation_date">CREATED: '.$img["creation_date"].'</p>
+            <p class="artist">BY: '.$img["username"].'</p>
+            '. display_comment_section($img["rowid"]) .
+            '
+            '. display_comment_box($img["rowid"]) .'
+        </li>';
+
     }
-    $body .= "</table>";
+    $body .= "</ul>";
     return $body;
 }
-
 ?>

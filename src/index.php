@@ -12,9 +12,11 @@ if (isset($_GET["page"])) {
 // counting the offset
 $offset = ($pagenum - 1) * $pic_limit;
 
+$body = '<h1>Welcome to dapinto\'s Cumagru</h1>
+';
 $all_galleries = fetch_pagination_elements_from_all_galleries($offset, $pic_limit);
 if ($all_galleries !== null) {
-    $body = output_gallery($all_galleries);
+    $body .= output_gallery($all_galleries);
 } else {
     $body = "<h1>We desperately need users, WHO IS GOING TO PAY FOR MY RENT ?? jk i dont get moey from this shit websi</h1>";
     $pagenum = 0;
@@ -54,11 +56,14 @@ if ($pagenum < $maxpage) {
 }
 
 $pagination ='
-    <hr />
-    <div id="pagination" style="margin:auto;width:50%">
+    <hr class="featurette-divider"/>
+    <div id="pagination">
         '. $first . $prev . " Showing page $pagenum of $maxpage pages " . $next . $last .
         '
     </div>';
 $body .= $pagination;
+
+$script = '<script type="text/javascript" src="assets/js/comments.js" defer></script>';
+
 include("template.php");
 ?>

@@ -66,12 +66,13 @@ if (!isset($_SESSION["user"]) && !isset($_SESSION["username"])) {
     }
 
     $pagination ='
-    <hr />
-    <div id="pagination" style="margin:auto;width:50%">
+    <hr class="featurette-divider" />
+    <div id="pagination">
         '. $first . $prev . " Showing page $pagenum of $maxpage pages " . $next . $last .
         '
     </div>';
     $body .= $pagination;
+    $script = '<script type="text/javascript" src="assets/js/comments.js" defer></script>';
     include("template.php");
 }
 ?>
