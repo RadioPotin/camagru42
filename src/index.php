@@ -13,12 +13,12 @@ if (isset($_GET["page"])) {
 $offset = ($pagenum - 1) * $pic_limit;
 
 $body = '<h1>Welcome to dapinto\'s Cumagru</h1>
-';
+    ';
 $all_galleries = fetch_pagination_elements_from_all_galleries($offset, $pic_limit);
 if ($all_galleries !== null) {
     $body .= output_gallery($all_galleries);
 } else {
-    $body = "<h1>We desperately need users, WHO IS GOING TO PAY FOR MY RENT ?? jk i dont get moey from this shit websi</h1>";
+    $body = "<h2>We desperately need users, WHO IS GOING TO PAY FOR MY RENT ?? jk i dont get moey from this shit websi</h2>";
     $pagenum = 0;
 }
 

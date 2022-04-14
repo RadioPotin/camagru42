@@ -41,7 +41,7 @@ if (isset($_POST["submit"])) {
       // actually create user by inserting information, hashing pwd, activation code, etc
       $user->create_pending_user();
       $user->send_activation_email();
-      $body = "<h1>Verification email has been sent ! Please check your inbox and click the link in order to activate your account</h1>";
+      $body = "<h2>Verification email has been sent ! Please check your inbox and click the link in order to activate your account</h2>";
       include_once 'template.php';
     }
   }

@@ -98,13 +98,14 @@ function display_comment_box($img_id) {
             <input type="hidden" name="token" value="'.$_SESSION["token"].'">
             <input type="hidden" class="img_id" value="'.$img_id.'">
             <textarea class="comment_text" placeholder="Comment goes here"></textarea>
+            <br />
             <button class="submit_comment" value="'.$_SESSION["username"].'">
                 Submit comment
             </button>';
     } else {
         return '
-            <div class="no_comment" style="margin-top: 20px;">
-                <h4 class="text-center">
+            <div class="no_comment">
+                <h4>
                     <a href="/login.php">Log in</a> or <a href="/signup.php"> Sign up</a> to post a comment
                 </h4>
             </div>';
@@ -114,24 +115,33 @@ function display_comment_box($img_id) {
 
 function display_comment_section($img_id) {
     $comment_section = return_comment_section($img_id);
-    $body = '<button class="display_comments">Display Comments</button>';
-    $body .= '
+
+    if (!empty($comment_section))
+    {
+        $body = '<button class="display_comments">Display Comments</button>';
+        $body .= '
             <br />
             <div class="comment_section" style="display:none;">
-                <ul>';
-    foreach ($comment_section as $comment)
-    {
-      $body .= '
-                    <li class="comment">
+                <ul>
+                    ';
+        foreach ($comment_section as $comment)
+        {
+            $body .= '<li class="comment">
                         <p class="author">AUTHOR: '.$comment["author"].'</p>
                         <p class="comment"> COMMENT: '.$comment["content"].'</p>
                         <br />
                     </li>';
-    }
-    $body .= '
+        }
+        $body .= '
                 </ul>
             </div>';
-    return $body;
+        return $body;
+    } else {
+        $body = '<div class="no_comment">
+                <p>There is no comment for this masterpiece yet !</p>
+            </div>';
+        return $body;
+    }
 }
 
 // need to add to this function a call to a function that returns a link to a specific user gallery when given $img["username"]
@@ -149,12 +159,11 @@ function output_gallery($gallery)
             <p class="creation_date">CREATED: '.$img["creation_date"].'</p>
             <p class="artist">BY: '.$img["username"].'</p>
             '. display_comment_section($img["rowid"]) .
-            '
-            '. display_comment_box($img["rowid"]) .'
+            display_comment_box($img["rowid"]) .'
         </li>';
-
     }
-    $body .= "</ul>";
+    $body .= "
+    </ul>";
     return $body;
 }
 ?>

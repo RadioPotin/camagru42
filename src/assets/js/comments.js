@@ -11,6 +11,7 @@ if (submit_comment_btns != null)
   // that logged in users may fill to comment the art
   function sendCommentToPhp(text, img_id, author, token)
   {
+    // TODO URL ENCODING
     let params = "comment=" + text + "&img_id=" + img_id + "&author=" + author + "&token=" + token + "&submit=submit";
 
     let httpRequest = new XMLHttpRequest();

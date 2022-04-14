@@ -37,7 +37,7 @@ if ($activation_code) {
         $user->activate_user();
         include_once "login.php";
     } else {
-        $body = '<h1>Either activation code has expired or is not recognized. Please register again.</h1>';
+        $body = '<h2>Either activation code has expired or is not recognized. Please register again.</h2>';
         include_once 'template.php' ;
     }
 } else {

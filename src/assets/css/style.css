@@ -1,5 +1,5 @@
 
-/* GENERAL ON */
+/* GENERAL */
 body {
   padding-bottom: 3rem;
   background-color: #EEEEEE;
@@ -8,18 +8,18 @@ body {
 }
 
 h1 {
-    display: block;
+    display: grid;
     text-align: center;
     font-size: 4em;
     margin-top: 0.67em;
-    margin-bottom: 0.67em;
+    margin-bottom: 1.5em;
     margin-left: 0;
     margin-right: 0;
     font-weight: bold;
 }
 
 h2 {
-    display: block;
+    display: grid;
     font-size: 1.5em;
     margin-top: 0.83em;
     margin-bottom: 0.83em;
@@ -29,7 +29,7 @@ h2 {
 }
 
 h3 {
-    display: block;
+    display: grid;
     font-size: 1.17em;
     margin-top: 1em;
     margin-bottom: 1em;
@@ -39,7 +39,7 @@ h3 {
 }
 
 h4 {
-    display: block;
+    display: grid;
     margin-top: 1.33em;
     margin-bottom: 1.33em;
     margin-left: 0;
@@ -48,7 +48,7 @@ h4 {
 }
 
 h5 {
-    display: block;
+    display: grid;
     font-size: .83em;
     margin-top: 1.67em;
     margin-bottom: 1.67em;
@@ -58,7 +58,7 @@ h5 {
 }
 
 h6 {
-    display: block;
+    display: grid;
     font-size: .67em;
     margin-top: 2.33em;
     margin-bottom: 2.33em;
@@ -73,7 +73,6 @@ h1, h2, h3, h4, h5, h6, p {
 	line-height: 24px;
 }
 
-
 hr.featurette-divider {
   margin: 3rem 0;
 }
@@ -82,9 +81,8 @@ h1.text-left {
   text-align: left;
   margin-bottom: 0.2em;
 }
-/* GENERAL OFF */
 
-/* NAVIGATION ON */
+/* NAVIGATION */
 nav .logo {
 	max-width: 40px;
 }
@@ -108,17 +106,17 @@ li:last-child {
 }
 
 nav ul li a {
-  display: block;
+  display: grid;
   color: white;
   text-align: center;
   padding: 10px 16px;
   text-decoration: none;
 }
-/* NAVIGATION OFF */
 
+/* FORMS */
 input[type=text], input[type=password] {
     text-align:center;
-    display: block;
+    display: grid;
     margin: auto;
 }
 
@@ -135,21 +133,64 @@ input[type=text], input[type=password] {
 
 .signup-form {
     text-align:center;
-    display: block;
+    display: grid;
     margin: auto;
 }
 
-/* SAVE PICTURE BUTTON */
-button.hide {
+/* PICTURE PAGE */
+
+#video {
   display:none;
 }
 
-button.show {
-  display: inline;
+#overlays {
+  display:none;
+}
+
+div.camera {
+}
+
+#canvas_saved {
+  display: grid;
+}
+
+/* SAVE PICTURE BUTTON */
+#savepic {
+  display:none;
 }
 
 /* GALLERY PAGES CSS */
 
 ul.my_gallery {
-  align-content: center;
+  align-items: center;
+}
+
+li.art_piece {
+  text-align:center;
+  margin-bottom: 1em;
+}
+
+div.comment_section {
+  display:none;
+}
+
+li.comment
+{
+}
+
+button.submit_comment {
+}
+
+
+
+div.no_comment {
+  margin-top:20px;
+}
+
+p.author {
+
+}
+
+p.comment{
+
 }

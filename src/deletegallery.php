@@ -53,7 +53,7 @@ if (isset($_POST["submit"])) {
             </form>
             </section>';
     } else {
-        $body = '<h1>You need to be logged into an account to delete its corresponding gallery.</h1>';
+        $body = '<h2>You need to be logged into an account to delete its corresponding gallery.</h2>';
     }
     include_once 'template.php';
 }

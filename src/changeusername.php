@@ -27,7 +27,7 @@ if (isset($_POST["submit"])) {
         check_user_pwd($user, $pwd);
         //check if newusername if not taken
         if (fetch_user_info($newname) !== null) {
-            err("<h1>Cannot change username, it is already taken.</h1>");
+            err("<h2>Cannot change username, it is already taken.</h2>");
         }
 
         //change username
@@ -53,7 +53,7 @@ if (isset($_POST["submit"])) {
             </form>
             </section>';
     } else {
-        $body = '<h1>You need to be logged into an account to change its affiliated username.</h1>';
+        $body = '<h2>You need to be logged into an account to change its affiliated username.</h2>';
     }
     include_once 'template.php';
 }
