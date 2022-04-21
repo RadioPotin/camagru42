@@ -48,6 +48,7 @@ function create_tables($pdo) : void {
             img BLOB NOT NULL,
             creation_date datetime NOT NULL,
             userid INTEGER NOT NULL,
+            users_img_id INTEGER NOT NULL,
 
             CONSTRAINT userid FOREIGN KEY (userid)
             REFERENCES verified_users(userid)
@@ -116,7 +117,7 @@ function count_img_entries() {
 
 function fetch_user_info($email_or_uid) {
     $pdo = connect_todb();
-    $sql = "SELECT username,email,userpwd,userid
+    $sql = "SELECT username,email,userpwd,userid,notifications
         FROM verified_users
         WHERE username=:uid
         OR email=:email
@@ -125,6 +126,47 @@ function fetch_user_info($email_or_uid) {
     $statement->bindParam(":uid", $email_or_uid);
     $statement->bindParam(":email", $email_or_uid);
     $statement->bindParam(":userid", $email_or_uid);
+    $statement->execute();
+    $row = $statement->fetchAll();
+    if (!empty($row)) {
+        return $row;
+    } else {
+        return null;
+    }
+}
+
+function fetch_author_from_img_id($img_id) {
+    $pdo = connect_todb();
+    $sql = "SELECT
+        verified_users.username,
+        verified_users.email,
+        verified_users.userid,
+        verified_users.notifications
+        FROM
+            verified_users, user_galleries
+        WHERE
+            user_galleries.rowid=:img_id
+        AND
+            user_galleries.userid=verified_users.userid";
+    $statement = $pdo->prepare($sql);
+    $statement->bindParam(":img_id", $img_id);
+    $statement->execute();
+    $row = $statement->fetchAll();
+    if (!empty($row)) {
+        return $row;
+    } else {
+        return null;
+    }
+}
+
+function return_specific_img($imgid) {
+    $pdo = connect_todb();
+    $sql = "SELECT user_galleries.rowid, img, creation_date,
+            verified_users.username as username
+        FROM user_galleries, verified_users
+        WHERE user_galleries.rowid=:imgid";
+    $statement = $pdo->prepare($sql);
+    $statement->bindParam(":imgid", $imgid);
     $statement->execute();
     $row = $statement->fetchAll();
     if (!empty($row)) {
@@ -202,6 +244,24 @@ function save_comment($img_id, $userid, $content){
     $statement->bindParam(":content", $content);
     $statement->execute();
     return ;
+}
+
+function delete_specific_pic($imgid) {
+      $pdo = connect_todb();
+      $sql = 'DELETE FROM user_galleries
+         WHERE rowid=:imgid';
+      $statement = $pdo->prepare($sql);
+      $statement->bindParam(':imgid', $imgid);
+      $statement->execute();
+}
+
+function delete_specific_pic_comments($imgid) {
+      $pdo = connect_todb();
+      $sql = 'DELETE FROM comments
+         WHERE img_id=:imgid';
+      $statement = $pdo->prepare($sql);
+      $statement->bindParam(':imgid', $imgid);
+      $statement->execute();
 }
 
 ?>

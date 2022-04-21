@@ -31,12 +31,11 @@
     <?php
       echo $body;
     ?>
-
-  </body>
   <?php
     if (!empty($script)){
       echo $script;
     }
   ?>
 
+  </body>
 </html>

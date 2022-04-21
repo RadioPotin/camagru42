@@ -127,10 +127,10 @@ function display_comment_section($img_id) {
         foreach ($comment_section as $comment)
         {
             $body .= '<li class="comment">
-                        <p class="author">AUTHOR: '.$comment["author"].'</p>
-                        <p class="comment"> COMMENT: '.$comment["content"].'</p>
-                        <br />
-                    </li>';
+                <p class="author">AUTHOR: '.$comment["author"].'</p>
+                <p class="comment"> COMMENT: '.$comment["content"].'</p>
+                <br />
+                </li>';
         }
         $body .= '
                 </ul>
@@ -138,10 +138,20 @@ function display_comment_section($img_id) {
         return $body;
     } else {
         $body = '<div class="no_comment">
-                <p>There is no comment for this masterpiece yet !</p>
+            <p>There is no comment for this masterpiece yet !</p>
             </div>';
         return $body;
     }
+}
+
+function delete_pic_link($imgid) {
+    $body = '<form action="deletepic.php" method="post">
+        <input type="hidden" name="token" value="'.$_SESSION["token"].'">
+        <input type="hidden" name="imgid" value="'.$imgid.'">
+        <input type="hidden" name="username" value="'.$_SESSION["username"].'">
+        <button type="submit" name="submit" style="color:red;">DELETE</button>
+        </form>';
+    return $body;
 }
 
 // need to add to this function a call to a function that returns a link to a specific user gallery when given $img["username"]
@@ -156,8 +166,10 @@ function output_gallery($gallery)
         $body .='
         <li class="art_piece">
             <img id="'.$img["rowid"].'" src="'.$img["img"].'">
-            <p class="creation_date">CREATED: '.$img["creation_date"].'</p>
-            <p class="artist">BY: '.$img["username"].'</p>
+            <p class="creation_date">'.$img["creation_date"].'</p>
+            <p class="pic_id">Pic id: '.$img["rowid"].'</p>
+            <p class="artist">Creator: '.$img["username"].'</p>
+            '. ($img["username"] === $_SESSION["username"] ? delete_pic_link($img["rowid"]) : "" ) .'
             '. display_comment_section($img["rowid"]) .
             display_comment_box($img["rowid"]) .'
         </li>';

@@ -23,7 +23,10 @@ class User {
    public function exists_in_pending(): bool {
       $pdo = connect_todb();
       $sql =
-         "SELECT * FROM pending_users
+         "SELECT
+         *
+         FROM
+         pending_users
          WHERE
          username = :usern
          OR
@@ -39,7 +42,10 @@ class User {
    public function exists_in_verified(): bool {
       $pdo = connect_todb();
       $sql =
-         "SELECT * FROM verified_users
+         "SELECT
+         *
+         FROM
+         verified_users
          WHERE
          username = :usern
          OR
@@ -88,7 +94,11 @@ class User {
 
    // deletes a user from pending_users table
    function delete_user_by_usern(): void {
-      $sql = 'DELETE FROM pending_users WHERE username =:usern';
+      $sql =
+         'DELETE FROM
+         pending_users
+         WHERE
+         username =:usern';
       $pdo = connect_todb();
       $statement = $pdo->prepare($sql);
       $statement->bindParam(':usern', $this->username);
@@ -105,8 +115,17 @@ class User {
    function activate_user() : void {
       $default_notif_mode = TRUE;
       //first, add user to verified users
-      $sql = 'INSERT INTO verified_users (username, email, notifications, userpwd)
-         VALUES (:usern, :email, :notifs, :pwd)';
+      $sql = 'INSERT INTO
+            verified_users (
+               username,
+               email,
+               notifications,
+               userpwd)
+               VALUES (
+                  :usern,
+                  :email,
+                  :notifs,
+                  :pwd)';
       $pdo = connect_todb();
       $statement = $pdo->prepare($sql);
       $statement->bindParam(':usern', $this->username);
@@ -176,6 +195,27 @@ MESSAGE;
       }
    }
 
+   // sends notification email to the author of a given picture
+   // under which a comment has just been poster
+   function send_comment_notification_email($sender, $sender_email, $content, $img_nb): void {
+      // create the activation link
+      // set email subject & body
+      $subject = 'Comment notification !';
+      $message = <<<MESSAGE
+Hi,
+$sender has commented on pic number $img_nb with the following:
+"$content",
+be sure to answer him/her !
+MESSAGE;
+      // email header
+      $header = "From:" . $sender_email;
+      // send the email
+      $success = mail($this->email, $subject, $message, $header);
+      if (!$success) {
+         $errorMessage = error_get_last()['message'];
+         die("ERROR, user.php: " . $errorMessage);
+      }
+   }
 
    // takes email of user
    // sends a link to reset password
@@ -241,7 +281,7 @@ MESSAGE;
       }
    }
 
-   function count_img_entries_of_user() {
+   function count_img_entries_of_user() :int {
       $pdo = connect_todb();
       $sql = "SELECT COUNT(*)
          FROM user_galleries, verified_users
@@ -256,8 +296,18 @@ MESSAGE;
 
    function add_pic_to_gallery(string $pic_b64) {
       $pdo = connect_todb();
-      $sql = 'INSERT INTO user_galleries(img, creation_date, userid)
-         VALUES (:img, :date, :id)';
+      $img_number = $this->count_img_entries_of_user();
+      $next_img_number = $img_number + 1;
+      $sql = 'INSERT INTO user_galleries(
+         img,
+         users_img_id,
+         creation_date,
+         userid)
+         VALUES (
+            :img,
+            :nb,
+            :date,
+            :id)';
       $statement = $pdo->prepare($sql);
 
       $userinfo = fetch_user_info($this->username);
@@ -265,10 +315,27 @@ MESSAGE;
 
       $date = date('Y-m-d H:i:s', time());
       $statement->bindParam(':id', $id);
+      $statement->bindParam(':nb', $next_img_number);
       $statement->bindParam(':date', $date);
       $statement->bindParam(':img', $pic_b64);
       $statement->execute();
       return ;
+   }
+
+   function return_image_number_usr_specific($img_id)
+   {
+      $pdo = connect_todb();
+      $sql = "SELECT
+            users_img_id
+         FROM
+            user_galleries
+         WHERE
+            rowid=:img_id";
+      $statement = $pdo->prepare($sql);
+      $statement->bindParam(':img_id', $img_id);
+      $statement->execute();
+      $nb = $statement->fetchColumn();
+      return $nb;
    }
 
    function delete_account($id): void {
