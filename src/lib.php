@@ -2,7 +2,6 @@
 include_once 'dbh.php';
 include_once 'include.php';
 
-
 const SENDER_EMAIL_ADDRESS = 'no-reply@email.com';
 
 const APP_URL = 'http://localhost:8888';
@@ -127,10 +126,10 @@ function display_comment_section($img_id) {
         foreach ($comment_section as $comment)
         {
             $body .= '<li class="comment">
-                <p class="author">AUTHOR: '.$comment["author"].'</p>
-                <p class="comment"> COMMENT: '.$comment["content"].'</p>
-                <br />
-                </li>';
+                        <p class="author">AUTHOR: '.$comment["author"].'</p>
+                        <p class="comment"> COMMENT: '.$comment["content"].'</p>
+                        <br />
+                    </li>';
         }
         $body .= '
                 </ul>
@@ -138,27 +137,40 @@ function display_comment_section($img_id) {
         return $body;
     } else {
         $body = '<div class="no_comment">
-            <p>There is no comment for this masterpiece yet !</p>
+                <p>There is no comment for this masterpiece yet !</p>
             </div>';
         return $body;
     }
 }
 
 function delete_pic_link($imgid) {
-    $body = '<form action="deletepic.php" method="post">
-        <input type="hidden" name="token" value="'.$_SESSION["token"].'">
-        <input type="hidden" name="imgid" value="'.$imgid.'">
-        <input type="hidden" name="username" value="'.$_SESSION["username"].'">
-        <button type="submit" name="submit" style="color:red;">DELETE</button>
-        </form>';
+    $body = '
+            <form action="deletepic.php" method="post">
+                <input type="hidden" name="token" value="'.$_SESSION["token"].'">
+                <input type="hidden" name="imgid" value="'.$imgid.'">
+                <input type="hidden" name="username" value="'.$_SESSION["username"].'">
+                <button type="submit" name="submit" style="color:red;">DELETE</button>
+            </form>';
     return $body;
+}
+
+function like_picture_button($username, $imgid) {
+    if (isset($_SESSION["user"]) && isset($_SESSION["username"])) {
+    $body = return_like_button($imgid, $username);
+    $body .= '
+            <input type="hidden" name="token" value="'.$_SESSION["token"].'">
+            <input type="hidden" name="imgidl" value="'.$imgid.'"><br />';
+    return $body;
+    } else {
+        $body = '<h4>Like button is for members</h4>';
+        return $body;
+    }
 }
 
 // need to add to this function a call to a function that returns a link to a specific user gallery when given $img["username"]
 // a comment section for each pic
 // a LIKE button for each pic
-function output_gallery($gallery)
-{
+function output_gallery($gallery) {
     $_SESSION["token"] = generate_csrf_token();
     $body = '<ul class="my_gallery">';
     foreach ($gallery as $img)
@@ -168,8 +180,9 @@ function output_gallery($gallery)
             <img id="'.$img["rowid"].'" src="'.$img["img"].'">
             <p class="creation_date">'.$img["creation_date"].'</p>
             <p class="pic_id">Pic id: '.$img["rowid"].'</p>
-            <p class="artist">Creator: '.$img["username"].'</p>
-            '. ($img["username"] === $_SESSION["username"] ? delete_pic_link($img["rowid"]) : "" ) .'
+            <p class="artist">Creator: '.$img["username"].'</p>'
+            . ($img["username"] === $_SESSION["username"] ? delete_pic_link($img["rowid"]) : "" ) .'
+            '. like_picture_button($_SESSION["username"], $img["rowid"]) .'
             '. display_comment_section($img["rowid"]) .
             display_comment_box($img["rowid"]) .'
         </li>';

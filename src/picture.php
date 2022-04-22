@@ -32,8 +32,4 @@ if (!isset($_SESSION["user"]) && !isset($_SESSION["username"])) {
     $script = '<script type="text/javascript" src="assets/js/script.js" defer></script>';
     include_once("template.php");
 }
-// TODO
-// 1. ADD RIGHT CLICK TO DELETE LAYER
-// 3. LIKES
-// 4. ULR ENCODE FOR httpRequests
 ?>

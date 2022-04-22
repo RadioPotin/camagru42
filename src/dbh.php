@@ -143,11 +143,11 @@ function fetch_author_from_img_id($img_id) {
         verified_users.userid,
         verified_users.notifications
         FROM
-            verified_users, user_galleries
+        verified_users, user_galleries
         WHERE
-            user_galleries.rowid=:img_id
+        user_galleries.rowid=:img_id
         AND
-            user_galleries.userid=verified_users.userid";
+        user_galleries.userid=verified_users.userid";
     $statement = $pdo->prepare($sql);
     $statement->bindParam(":img_id", $img_id);
     $statement->execute();
@@ -162,7 +162,7 @@ function fetch_author_from_img_id($img_id) {
 function return_specific_img($imgid) {
     $pdo = connect_todb();
     $sql = "SELECT user_galleries.rowid, img, creation_date,
-            verified_users.username as username
+        verified_users.username as username
         FROM user_galleries, verified_users
         WHERE user_galleries.rowid=:imgid";
     $statement = $pdo->prepare($sql);
@@ -246,22 +246,95 @@ function save_comment($img_id, $userid, $content){
     return ;
 }
 
+function return_like_button($img_id, $username) {
+    $userinfo = fetch_user_info($username);
+    $pdo = connect_todb();
+    $sql = "SELECT 1
+        FROM likes
+        WHERE
+        img_id=:img_id
+        AND
+        userid=:userid";
+    $userid = $userinfo[0]["userid"];
+    $statement = $pdo->prepare($sql);
+    $statement->bindParam(":img_id", $img_id);
+    $statement->bindParam(":userid", $userid);
+    $statement->execute();
+    $row = $statement->fetchAll();
+    if (!empty($row)) {
+        return '<button class="like" value="'.$username.'">UNLIKE</button>';
+    } else {
+        return '<button class="like" value="'.$username.'">LIKE</button>';
+    }
+}
+
+function is_liking($img_id, $username) {
+    $userinfo = fetch_user_info($username);
+    $pdo = connect_todb();
+    $sql = "SELECT *
+        FROM likes
+        WHERE
+        img_id=:img_id
+        AND
+        userid=:userid";
+    $userid = $userinfo[0]["userid"];
+    $statement = $pdo->prepare($sql);
+    $statement->bindParam(":img_id", $img_id);
+    $statement->bindParam(":userid", $userid);
+    $statement->execute();
+    $row = $statement->fetchColumn();
+    if (!$row) {
+        return null;
+    } else {
+        return $row;
+    }
+}
+
+function save_like($img_id, $userid) {
+    $pdo = connect_todb();
+    $sql = "INSERT INTO likes(
+        img_id,
+        userid)
+        VALUES(
+            :img_id,
+            :userid)";
+    $statement = $pdo->prepare($sql);
+    $statement->bindParam(":img_id", $img_id);
+    $statement->bindParam(":userid", $userid);
+    $statement->execute();
+    return;
+}
+
+function delete_like($img_id, $userid) {
+    $pdo = connect_todb();
+    $sql = "DELETE FROM likes
+        WHERE
+        img_id=:img_id
+        AND
+        userid=:userid";
+    $statement = $pdo->prepare($sql);
+    $statement->bindParam(":img_id", $img_id);
+    $statement->bindParam(":userid", $userid);
+    $statement->execute();
+    return;
+}
+
 function delete_specific_pic($imgid) {
-      $pdo = connect_todb();
-      $sql = 'DELETE FROM user_galleries
-         WHERE rowid=:imgid';
-      $statement = $pdo->prepare($sql);
-      $statement->bindParam(':imgid', $imgid);
-      $statement->execute();
+    $pdo = connect_todb();
+    $sql = 'DELETE FROM user_galleries
+        WHERE rowid=:imgid';
+    $statement = $pdo->prepare($sql);
+    $statement->bindParam(':imgid', $imgid);
+    $statement->execute();
 }
 
 function delete_specific_pic_comments($imgid) {
-      $pdo = connect_todb();
-      $sql = 'DELETE FROM comments
-         WHERE img_id=:imgid';
-      $statement = $pdo->prepare($sql);
-      $statement->bindParam(':imgid', $imgid);
-      $statement->execute();
+    $pdo = connect_todb();
+    $sql = 'DELETE FROM comments
+        WHERE img_id=:imgid';
+    $statement = $pdo->prepare($sql);
+    $statement->bindParam(':imgid', $imgid);
+    $statement->execute();
 }
 
 ?>

@@ -1,7 +1,9 @@
 // submit_comment button
 let submit_comment_btns = document.getElementsByClassName('submit_comment');
-// submit_comment button
+// display_comments button
 let display_comments_btns = document.getElementsByClassName('display_comments');
+// like button
+let like_btns = document.getElementsByClassName('like');
 
 // Do not run if no button is found
 if (submit_comment_btns != null)
@@ -74,7 +76,53 @@ if (display_comments_btns != null)
     };
   }
 
-    for (var i = 0; i < display_comments_btns.length; i++) {
-      display_comments_btns[i].addEventListener('click', handleCommentSectionDisplayEvent(i), false);
+  for (var i = 0; i < display_comments_btns.length; i++) {
+    display_comments_btns[i].addEventListener('click', handleCommentSectionDisplayEvent(i), false);
+  }
+}
+
+if (like_btns != null)
+{
+  function sendLikeToPhp(img_id, liker, token) {
+    // TODO URL ENCODING
+    let params = "img_id=" + img_id + "&liker=" + liker + "&token=" + token + "&submit=submit";
+    console.log(img_id);
+
+    let httpRequest = new XMLHttpRequest();
+    httpRequest.open('POST', 'savelike.php', true);
+    httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    httpRequest.send(params);
+    return;
+  }
+
+  function like_unlike_pic(e, i) {
+    let btns = document.getElementsByClassName("like");
+    let like_btn_img_id = document.getElementsByName('imgidl');
+    let token_field = document.getElementsByName('token');
+
+    // change display of like button
+    if (btns[i].innerHTML === "LIKE") {
+      btns[i].innerHTML = "UNLIKE";
+    } else {
+      btns[i].innerHTML = "LIKE";
     }
+
+    // get specific info on like
+    let imgid = like_btn_img_id[i].value;
+    let token = token_field[i].value;
+    let liker = e.target.value;
+
+    sendLikeToPhp(imgid, liker, token);
+  }
+
+  function handleLikeEvent(i) {
+    return function(e) {
+      like_unlike_pic(e, i);
+    };
+  }
+
+  for (var i = 0; i < like_btns.length; i++) {
+    like_btns[i].addEventListener('click', handleLikeEvent(i), false);
+  }
+
 }
