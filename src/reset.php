@@ -9,9 +9,7 @@ include_once "user.php";
 if (isset($_POST["submit"])) {
     //if you did, but token does NOT match
     if (!$_POST["token"] || $_POST["token"] !== $_SESSION["token"]) {
-        // TODO PROPER ERROR PAGE
-        echo "EXITING PWDRESET BAD TOKEN";
-        exit;
+        err('Token invalid, sneaky access rejected');
     } else {
         $pwd = $_POST["pwd"];
         $pwdd = $_POST["pwdd"];
@@ -21,8 +19,7 @@ if (isset($_POST["submit"])) {
             // get previous password and compare it to new one
             $username = $_SESSION["username"];
             $row = fetch_user_info($username);
-            if (!password_verify($pwd, $row[0]["userpwd"])) {
-                //TODO dont forget to add function validate_pwd to that test
+            if (!password_verify($pwd, $row[0]["userpwd"] && password_verify($pwd))) {
                 $hashed_pwd = password_hash($pwd, PASSWORD_DEFAULT);
                 $user = new User($row[0]["username"], $hashed_pwd, $row[0]["email"]);
                 $user->change_pwd($row[0]["userid"]);

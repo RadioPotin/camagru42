@@ -9,9 +9,7 @@ include_once "user.php";
 if (isset($_POST["submit"])) {
     //if you did, but token does NOT match
     if (!$_POST["token"] || $_POST["token"] !== $_SESSION["token"]) {
-        // TODO PROPER ERROR PAGE
-        echo "EXITING PWDRESET BAD TOKEN";
-        exit;
+        err('Token invalid, sneaky access rejected');
     } else {
         //SUBMITTED AND TOKEN MATCHED
         //

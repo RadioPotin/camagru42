@@ -13,8 +13,12 @@ if (submit_comment_btns != null)
   // that logged in users may fill to comment the art
   function sendCommentToPhp(text, img_id, author, token)
   {
-    // TODO URL ENCODING
-    let params = "comment=" + text + "&img_id=" + img_id + "&author=" + author + "&token=" + token + "&submit=submit";
+    let entext = encodeURIComponent(text);
+    let enimg_id = encodeURIComponent(img_id);
+    let enauthor = encodeURIComponent(author);
+    let entoken = encodeURIComponent(token);
+
+    let params = "comment=" + entext + "&img_id=" + enimg_id + "&author=" + enauthor + "&token=" + entoken + "&submit=submit";
 
     let httpRequest = new XMLHttpRequest();
     httpRequest.open('POST', 'savecomment.php', true);
@@ -84,9 +88,11 @@ if (display_comments_btns != null)
 if (like_btns != null)
 {
   function sendLikeToPhp(img_id, liker, token) {
-    // TODO URL ENCODING
-    let params = "img_id=" + img_id + "&liker=" + liker + "&token=" + token + "&submit=submit";
-    console.log(img_id);
+    let enimg_id = encodeURIComponent(img_id);
+    let enliker = encodeURIComponent(liker);
+    let entoken = encodeURIComponent(token);
+
+    let params = "img_id=" + enimg_id + "&liker=" + enliker + "&token=" + entoken + "&submit=submit";
 
     let httpRequest = new XMLHttpRequest();
     httpRequest.open('POST', 'savelike.php', true);

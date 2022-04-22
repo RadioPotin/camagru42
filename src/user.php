@@ -106,7 +106,6 @@ class User {
       return ;
    }
 
-   //TODO, USE PASSWORD VEriFY
    function check_user_pwd(string $pwd): bool {
       return password_verify($pwd, $this->pwd);
    }

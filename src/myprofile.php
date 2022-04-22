@@ -16,7 +16,6 @@ if (isset($_SESSION["user"]) && isset($_SESSION["username"])) {
             $user->deactivate_notifications();
         }
     }
-
     $body = '<h1>Welcome, ' . $username . '!</h1>
         <div id="usersettings">
         <h2>User Information</h2>
@@ -51,7 +50,7 @@ if (isset($_SESSION["user"]) && isset($_SESSION["username"])) {
 ';
     include_once "template.php";
 } else {
-    err('<h1>Try registering or logging in first</h1>');
+    err('Try registering or logging in first');
     exit ;
 }
 ?>

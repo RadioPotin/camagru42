@@ -294,8 +294,10 @@ upload.addEventListener('change', handle_image, false);
 // php script extract b64 encoded image and saves it to the relevant DB
 //
 function sendPictureToPhp(entry, token) {
-  //TODO urlencoding
-  let params = "entry=" + entry + "&token=" + token + "&submit=submit";
+  let enentry = encodeURIComponent(entry);
+  let entoken = encodeURIComponent(token);
+
+  let params = "entry=" + enentry + "&token=" + entoken + "&submit=submit";
 
   let httpRequest = new XMLHttpRequest();
   httpRequest.open('POST', 'savetogallery.php', true);

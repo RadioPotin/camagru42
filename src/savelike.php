@@ -9,9 +9,7 @@ include_once 'user.php';
 if (isset($_POST["submit"])) {
   //if you did, but token does NOT match
   if (!$_POST["token"] || $_POST["token"] !== $_SESSION["token"]) {
-    // TODO PROPRE ERROR PAGE
-    echo "NO TOKEN SAVE LIKE";
-    exit;
+    err('Token invalid, sneaky access rejected');
   } else {
     $liker = $_POST["liker"];
     $liked_imgid = $_POST["img_id"];
@@ -26,6 +24,6 @@ if (isset($_POST["submit"])) {
     }
   }
 } else {
-  err('<h1>trying to be sneaky again ?</h1>');
+  err('Trying to be sneaky again ?');
 }
 ?>

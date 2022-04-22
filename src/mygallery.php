@@ -6,9 +6,7 @@ include_once 'user.php';
 
 //if you did, but token does NOT match
 if (!isset($_SESSION["user"]) && !isset($_SESSION["username"])) {
-    // TODO PROPRE ERROR PAGE
-    err("<h1>You need to register or log in !</h1>");
-    exit;
+    err("You need to register or log in !");
 } else {
     $pic_limit = 5;
     $pagenum = 1;

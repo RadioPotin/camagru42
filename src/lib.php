@@ -72,21 +72,21 @@ function validate_pwd($pwd) {
 
 function check_session_rights($username, $email) {
     if ($username !== $_SESSION["username"] || $email !== $_SESSION["email"]) {
-        err("<h1>You do not have the rights</h1>");
+        err("You do not have the rights");
     }
     return TRUE;
 }
 
 function check_user_existence($username_or_email_or_uid) {
     if (fetch_user_info($username_or_email_or_uid) === null) {
-        err("<h1>No such user</h1>");
+        err("No such user");
     }
     return TRUE;
 }
 
 function check_user_pwd($user, $pwd) {
     if (!$user->check_user_pwd($pwd)) {
-        err("<h1>Incorrect password</h1>");
+        err("Incorrect password");
     }
     return TRUE;
 }

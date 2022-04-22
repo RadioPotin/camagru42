@@ -6,10 +6,7 @@ include_once "user.php";
 
 if (isset($_POST["submit"])) {
     if (!$_POST["token"] || $_POST["token"] !== $_SESSION["token"]) {
-        // TODO PROPER ERROR PAGE
-        echo "EXITING CHANGE EMAIL BAD TOKEN";
-        exit;
-
+        err('Token invalid, sneaky access rejected');
     } else {
         //SUBMITTED AND TOKEN MATCHED
         // process the form
@@ -27,7 +24,7 @@ if (isset($_POST["submit"])) {
         check_user_pwd($user, $pwd);
         //check if newusername if not taken
         if (fetch_user_info($newemail) !== null) {
-            err("<h1>Cannot change email, new one is already taken.</h1>");
+            err("Cannot change email, new one is already taken.");
         }
 
         //change username

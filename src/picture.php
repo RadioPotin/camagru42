@@ -3,7 +3,7 @@ include_once 'include.php';
 include_once 'lib.php';
 
 if (!isset($_SESSION["user"]) && !isset($_SESSION["username"])) {
-    err('<h1>Try registering or logging in first</h1>');
+    err('Try registering or logging in first');
     exit;
 } else {
     $_SESSION["token"] = generate_csrf_token();

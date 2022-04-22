@@ -6,10 +6,7 @@ include_once "user.php";
 
 if (isset($_POST["submit"])) {
     if (!$_POST["token"] || $_POST["token"] !== $_SESSION["token"]) {
-        // TODO PROPER ERROR PAGE
-        echo "EXITING DELETE gallery BAD TOKEN";
-        exit;
-
+        err('Token invalid, sneaky access rejected');
     } else {
         //SUBMITTED AND TOKEN MATCHED
         // process the form

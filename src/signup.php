@@ -7,10 +7,7 @@ include_once 'include.php';
 if (isset($_POST["submit"])) {
   //if you did, but token does NOT match
   if (!$_POST["token"] || $_POST["token"] !== $_SESSION["token"]) {
-    // TODO PROPRE ERROR PAGE
-    // return 405 http status code
-    echo "NO TOKEN SIGNUP.php";
-    exit;
+    err('Token invalid, sneaky access rejected');
   } else {
     //SUBMITTED AND TOKEN MATCHED
     //
@@ -25,7 +22,7 @@ if (isset($_POST["submit"])) {
     validate_username($username);
     validate_email($email);
     match_pwds($pwd, $pwdd);
-    //TODO uncomment validate_pwd($pwd);
+    validate_pwd($pwd);
 
     // if form is well filled, so use user's info to
     // create a new user in the database
